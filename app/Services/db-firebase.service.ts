@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 const DBURL = 'https://bl2-weapons-default-rtdb.firebaseio.com/';
 
 @Injectable()
-export class FirebaseService {
+export class DbFirebaseService {
   constructor(private httpClient: HttpClient) {}
 
   getTypeCodes() {

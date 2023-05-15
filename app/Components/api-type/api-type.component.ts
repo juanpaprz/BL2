@@ -1,14 +1,14 @@
 import { Component, Injectable, OnInit } from '@angular/core';
-import { FirebaseService } from 'app/Services/firebase.service';
+import { DbFirebaseService } from 'app/Services/db-firebase.service';
 
-@Injectable()
 @Component({
   selector: 'app-api-type',
   templateUrl: './api-type.component.html',
   styleUrls: ['./api-type.component.css'],
 })
+@Injectable()
 export class ApiTypeComponent implements OnInit {
-  constructor(private dbService: FirebaseService) {}
+  constructor(private dbService: DbFirebaseService) {}
 
   ngOnInit() {}
 }
