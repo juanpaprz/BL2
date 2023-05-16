@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { Type } from '../Entities/Type';
+import { Observable } from 'rxjs';
 import { TypeCode } from '../Entities/TypeCode';
 import { DbFirebaseService } from '../Services/db-firebase.service';
 
@@ -14,6 +15,38 @@ export class ApiFirebaseService {
   }
 
   addTypeCode(typeCode: TypeCode): Observable<TypeCode> {
+    typeCode.id = this.generateId();
     return this.dbService.addTypeCode(typeCode);
+  }
+
+  addType(type: Type): Observable<Type> {
+    type.id = this.generateId();
+    return this.dbService.addType(type);
+  }
+
+  generateId() {
+    const CHARS =
+      '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+    let id = '';
+    for (let i = 0; i < 18; i++) {
+      id += CHARS[Math.floor(Math.random() * CHARS.length)];
+    }
+
+    id = [
+      id.slice(0, 3),
+      '-',
+      id.slice(3, 6),
+      '-',
+      id.slice(6, 9),
+      '-',
+      id.slice(9, 12),
+      '-',
+      id.slice(12, 15),
+      '-',
+      id.slice(15, 18),
+    ].join('');
+
+    return id;
   }
 }

@@ -1,4 +1,24 @@
 <h2>Weapon Type</h2>
 
-<hr>
+<hr />
 
+<div class="row">
+  <form #form="ngForm" class="col-lg-6" (ngSubmit)="addType()">
+    <div class="mb-3">
+      <select
+        name="code"
+        id="code"
+        class="form-select"
+        [(ngModel)]="TypeCodeId"
+      >
+        <option value=""></option>
+        <option *ngFor="let typeCode of TypeCodes" [value]="typeCode.id">
+          {{ typeCode.name }}
+        </option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </form>
+</div>
