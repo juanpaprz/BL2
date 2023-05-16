@@ -1,5 +1,5 @@
 import { Component, Injectable, OnInit } from '@angular/core';
-import { DbFirebaseService } from 'app/Services/db-firebase.service';
+import { DbFirebaseService } from '../../Services/db-firebase.service';
 
 @Component({
   selector: 'app-api-type',

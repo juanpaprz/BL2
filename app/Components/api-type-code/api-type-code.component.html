@@ -1,0 +1,28 @@
+<h2>Weapon type code</h2>
+
+<hr />
+
+<div class="row">
+  <form #form="ngForm" class="col-lg-6" (ngSubmit)="addTypeCode()">
+    <div class="mb-3">
+      <label for="code">Code</label>
+      <input type="text" id="code" name="code" class="form-control" [(ngModel)]="TypeCode.code"/>
+    </div>
+    <div class="mb-3">
+      <label for="code">Name</label>
+      <input type="text" id="name" name="name" class="form-control" [(ngModel)]="TypeCode.name"/>
+    </div>
+    <div class="mb-3">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </form>
+  <div class="col-lg-2"></div>
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-header">Type Codes</div>
+      <ul class="list-group list-group-flush" *ngFor="let typeCode of TypeCodes">
+        <li class="list-group-item">{{typeCode.name}}</li>
+      </ul>
+    </div>
+  </div>
+</div>
