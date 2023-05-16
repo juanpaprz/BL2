@@ -1,6 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -9,6 +9,7 @@ import { ApiBodyCodeComponent } from './Components/api-body-code/api-body-code.c
 import { ApiManagementComponent } from './Components/api-management/api-management.component';
 import { ApiTypeCodeComponent } from './Components/api-type-code/api-type-code.component';
 import { ApiTypeComponent } from './Components/api-type/api-type.component';
+import { InvalidFieldComponent } from './Components/Common/invalid-field/invalid-field.component';
 import { TableComponent } from './Components/Common/table/table.component';
 import { ApiFirebaseService } from './Services/api-firebase.service';
 import { DbFirebaseService } from './Services/db-firebase.service';
@@ -26,6 +27,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [DbFirebaseService, ApiFirebaseService],
   declarations: [
@@ -34,7 +36,8 @@ const appRoutes: Routes = [
     ApiTypeComponent,
     ApiTypeCodeComponent,
     TableComponent,
-    ApiBodyCodeComponent
+    ApiBodyCodeComponent,
+    InvalidFieldComponent,
   ],
   bootstrap: [AppComponent],
 })

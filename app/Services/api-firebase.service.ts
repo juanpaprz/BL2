@@ -3,6 +3,7 @@ import { Type } from '../Entities/Type';
 import { Observable } from 'rxjs';
 import { TypeCode } from '../Entities/TypeCode';
 import { DbFirebaseService } from '../Services/db-firebase.service';
+import { BodyCode } from '../Entities/BodyCode';
 
 @Injectable()
 export class ApiFirebaseService {
@@ -24,6 +25,15 @@ export class ApiFirebaseService {
   addType(type: Type): Observable<Type> {
     type.id = this.generateId();
     return this.dbService.addType(type);
+  }
+
+  getBodyCodes(): Observable<BodyCode[]> {
+    return this.dbService.getBodyCodes();
+  }
+
+  addBodyCode(bodyCode: BodyCode): Observable<BodyCode> {
+    bodyCode.id = this.generateId();
+    return this.dbService.addBodyCode(bodyCode);
   }
 
   generateId() {

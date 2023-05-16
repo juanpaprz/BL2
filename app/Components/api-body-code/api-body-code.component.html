@@ -1,0 +1,51 @@
+<h2>Body Codes</h2>
+
+<hr />
+
+<div class="row">
+  <form [formGroup]="bodyCodeForm" class="col-lg-6" (ngSubmit)="addBodyCode()" >
+    <div class="mb-3">
+      <label for="code" class="form-label">Code</label>
+      <input
+        type="text"
+        id="code"
+        name="code"
+        class="form-control"
+        formControlName="code"
+        [class.border-danger]="invalid"
+      />
+      <span class="text-danger" *ngIf="invalid">The field Code is requiered</span>
+    </div>
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        class="form-control"
+        formControlName="name"
+      />
+      <span class="text-danger" *ngIf="invalid">The field Name is requiered</span>
+    </div>
+    <div class="mb-3">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </form>
+  <div class="col-lg-2"></div>
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-header"><h4>Body Codes</h4></div>
+      <ul
+        class="list-group list-group-flush"
+        *ngFor="let bodyCode of bodyCodes"
+      >
+        <li class="list-group-item d-flex justify-content-between">
+          <div class="fw-bold">
+            {{ bodyCode.name }}
+          </div>
+          <small>{{ bodyCode.code }}</small>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
