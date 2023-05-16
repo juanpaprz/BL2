@@ -8,9 +8,9 @@ import { ApiFirebaseService } from '../../Services/api-firebase.service';
   styleUrls: ['./api-type-code.component.css'],
 })
 export class ApiTypeCodeComponent implements OnInit {
-  TypeCodes: TypeCode[] = [];
+  typeCodes: TypeCode[] = [];
 
-  TypeCode: TypeCode = {
+  typeCode: TypeCode = {
     id: '',
     code: '',
     name: '',
@@ -25,16 +25,16 @@ export class ApiTypeCodeComponent implements OnInit {
   getTypeCodes() {
     this.apiService.getAllTypeCodes().subscribe({
       next: (response) => {
-        if (response) this.TypeCodes = Object.values(response);
+        if (response) this.typeCodes = Object.values(response);
       },
     });
   }
 
   addTypeCode() {
-    this.apiService.addTypeCode(this.TypeCode).subscribe({
+    this.apiService.addTypeCode(this.typeCode).subscribe({
       next: (response) => {
         console.log(response);
-        this.TypeCode = {
+        this.typeCode = {
           id: '',
           code: '',
           name: '',

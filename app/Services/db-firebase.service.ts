@@ -23,6 +23,10 @@ export class DbFirebaseService {
     );
   }
 
+  getTypes(): Observable<Type[]> {
+    return this.httpClient.get<Type[]>(DBURL + 'Type.json');
+  }
+
   addType(type: Type): Observable<Type> {
     return this.httpClient.put<TypeCode>(`${DBURL}Type/${type.id}.json`, type);
   }

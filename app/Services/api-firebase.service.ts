@@ -9,14 +9,16 @@ export class ApiFirebaseService {
   constructor(private dbService: DbFirebaseService) {}
 
   getAllTypeCodes(): Observable<TypeCode[]> {
-    let typeCodes: TypeCode[] = [];
-
     return this.dbService.getTypeCodes();
   }
 
   addTypeCode(typeCode: TypeCode): Observable<TypeCode> {
     typeCode.id = this.generateId();
     return this.dbService.addTypeCode(typeCode);
+  }
+
+  getAllTypes(): Observable<Type[]> {
+    return this.dbService.getTypes();
   }
 
   addType(type: Type): Observable<Type> {

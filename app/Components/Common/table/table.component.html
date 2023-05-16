@@ -1,0 +1,19 @@
+<table class="table table-sm table-striped">
+  <thead class="table-dark">
+    <tr>
+      <th
+        *ngFor="let head of headers"
+        [ngClass]="hideId && head == 'Id' ? 'd-none' : ''"
+      >
+        {{ head }}
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let value of values">
+      <td *ngFor="let data of value" [ngClass]="isId(data) ? 'd-none' : ''">
+        {{ data }}
+      </td>
+    </tr>
+  </tbody>
+</table>

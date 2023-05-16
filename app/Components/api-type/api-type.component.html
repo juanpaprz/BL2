@@ -9,10 +9,10 @@
         name="code"
         id="code"
         class="form-select"
-        [(ngModel)]="TypeCodeId"
+        [(ngModel)]="typeCodeId"
       >
         <option value=""></option>
-        <option *ngFor="let typeCode of TypeCodes" [value]="typeCode.id">
+        <option *ngFor="let typeCode of typeCodes" [value]="typeCode.id">
           {{ typeCode.name }}
         </option>
       </select>
@@ -21,4 +21,8 @@
       <button type="submit" class="btn btn-primary">Submit</button>
     </div>
   </form>
+  <div class="col-lg-1"></div>
+  <div class="col-lg-5">
+    <app-table [headers]="headers" [values]="values"></app-table>
+  </div>
 </div>

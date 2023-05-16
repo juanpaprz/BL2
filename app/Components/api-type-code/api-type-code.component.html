@@ -11,7 +11,7 @@
         id="code"
         name="code"
         class="form-control"
-        [(ngModel)]="TypeCode.code"
+        [(ngModel)]="typeCode.code"
       />
     </div>
     <div class="mb-3">
@@ -21,7 +21,7 @@
         id="name"
         name="name"
         class="form-control"
-        [(ngModel)]="TypeCode.name"
+        [(ngModel)]="typeCode.name"
       />
     </div>
     <div class="mb-3">
@@ -34,7 +34,7 @@
       <div class="card-header"><h4>Type Codes</h4></div>
       <ul
         class="list-group list-group-flush"
-        *ngFor="let typeCode of TypeCodes"
+        *ngFor="let typeCode of typeCodes"
       >
         <li class="list-group-item d-flex justify-content-between">
           <div class="fw-bold">
