@@ -2,15 +2,49 @@
 <hr />
 
 <div class="row">
-  <form [formGroup]="form" class="col-lg-6">
+  <form [formGroup]="form" class="col-lg-6" (ngSubmit)="addBody()">
     <div class="mb-3">
       <label for="bodyCode" class="form-label">Body</label>
-      <select name="bodyCode" id="bodyCode" class="form-select">
+      <select
+        name="bodyCode"
+        id="bodyCode"
+        class="form-select"
+        formControlName="bodyId"
+        [ngClass]="setInvalidClass('bodyId')"
+      >
         <option value=""></option>
-        <option [value]="bodyCode.id" *ngFor="let bodyCode; for: bodyCodes">
+        <option *ngFor="let bodyCode of bodyCodes" [value]="bodyCode.id">
           {{ bodyCode.name }}
         </option>
       </select>
+      <app-invalid-field
+        [message]="'The field Body is required'"
+        [display]="isFieldValid('bodyId')"
+      ></app-invalid-field>
+    </div>
+    <div class="mb-3" formArrayName="types">
+      <label class="form-label">Types</label>
+      <ul class="list-group">
+        <li
+          class="list-group-item"
+          *ngFor="let typeCode of typeCodes; index as i"
+          [ngClass]="setInvalidClass('types')"
+        >
+          <input
+            type="checkbox"
+            [id]="typeCode.code"
+            class="form-check-input me-1"
+            [formControlName]="i"
+            [ngClass]="setInvalidClass('types')"
+          />
+          <label [for]="typeCode.code" class="form-check-label">{{
+            typeCode.name
+          }}</label>
+        </li>
+      </ul>
+    </div>
+    <div class="mb-3">
+      <button type="submit" class="btn btn-primary">Submit</button>
     </div>
   </form>
 </div>
