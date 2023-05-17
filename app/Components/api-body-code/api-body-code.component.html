@@ -3,7 +3,7 @@
 <hr />
 
 <div class="row">
-  <form [formGroup]="bodyCodeForm" class="col-lg-6" (ngSubmit)="addBodyCode()" >
+  <form [formGroup]="form" class="col-lg-6" (ngSubmit)="addBodyCode()">
     <div class="mb-3">
       <label for="code" class="form-label">Code</label>
       <input
@@ -12,9 +12,12 @@
         name="code"
         class="form-control"
         formControlName="code"
-        [class.border-danger]="invalid"
+        [ngClass]="setInvalidClass('code')"
       />
-      <span class="text-danger" *ngIf="invalid">The field Code is requiered</span>
+      <app-invalid-field
+        [message]="'The field Code is required'"
+        [display]="isFieldValid('code')"
+      ></app-invalid-field>
     </div>
     <div class="mb-3">
       <label for="name" class="form-label">Name</label>
@@ -24,8 +27,12 @@
         name="name"
         class="form-control"
         formControlName="name"
+        [ngClass]="setInvalidClass('name')"
       />
-      <span class="text-danger" *ngIf="invalid">The field Name is requiered</span>
+      <app-invalid-field
+        [message]="'The field Name is required'"
+        [display]="isFieldValid('name')"
+      ></app-invalid-field>
     </div>
     <div class="mb-3">
       <button type="submit" class="btn btn-primary">Submit</button>

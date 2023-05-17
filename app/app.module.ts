@@ -13,6 +13,7 @@ import { InvalidFieldComponent } from './Components/Common/invalid-field/invalid
 import { TableComponent } from './Components/Common/table/table.component';
 import { ApiFirebaseService } from './Services/api-firebase.service';
 import { DbFirebaseService } from './Services/db-firebase.service';
+import { ValidationService } from './Services/validation.service';
 
 const appRoutes: Routes = [
   { path: 'api', component: ApiManagementComponent },
@@ -29,7 +30,7 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
   ],
-  providers: [DbFirebaseService, ApiFirebaseService],
+  providers: [DbFirebaseService, ApiFirebaseService, ValidationService],
   declarations: [
     AppComponent,
     ApiManagementComponent,

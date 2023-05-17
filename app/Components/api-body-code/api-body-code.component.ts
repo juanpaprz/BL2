@@ -19,15 +19,19 @@ export class ApiBodyCodeComponent implements OnInit {
 
   bodyCodes: BodyCode[] = [];
 
-  bodyCodeForm: FormGroup = new FormGroup({
-    code: new FormControl('', Validators.required),
-    name: new FormControl('', Validators.required),
-  });
-
-  invalid: boolean = false;
+  form: FormGroup = new FormGroup({});
 
   ngOnInit() {
     this.getBodyCodes();
+
+    this.form = new FormGroup({
+      code: new FormControl('', [
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(4),
+      ]),
+      name: new FormControl('', Validators.required),
+    });
   }
 
   getBodyCodes() {
@@ -38,27 +42,45 @@ export class ApiBodyCodeComponent implements OnInit {
     });
   }
 
+  isFieldValid(field: string): boolean {
+    return !this.form.get(field)?.valid && this.form.get(field)?.touched!;
+  }
+
+  setInvalidClass(field: string) {
+    return {
+      'border-danger': this.isFieldValid(field),
+    };
+  }
+
+  toucheFields(touche: boolean) {
+    Object.keys(this.form.controls).forEach((field) => {
+      const control = this.form.get(field);
+      if (touche)
+        control?.markAsTouched({ onlySelf: true });
+      else
+        control?.markAsUntouched({ onlySelf: true });
+    });
+  }
+
   addBodyCode() {
-    if (this.bodyCodeForm.valid) {
-      this.invalid = false;
+    if (this.form.valid) {
+      this.bodyCode.code = this.form.value.code;
+      this.bodyCode.name = this.form.value.name;
 
-      this.bodyCode.code = this.bodyCodeForm.value.code;
-      this.bodyCode.name = this.bodyCodeForm.value.name;
-
-      /*this.dbService.addBodyCode(this.bodyCode).subscribe({
+      this.dbService.addBodyCode(this.bodyCode).subscribe({
         next: (response) => {
           console.log(response);
-          this.bodyCode = {
-            id: '',
-            name: '',
+          this.form.patchValue({
             code: '',
-          };
+            name: '',
+          });
+          this.toucheFields(false)
           this.getBodyCodes();
         },
-      });*/
+      });
     } else {
-      console.log(this.bodyCodeForm)
-      this.invalid = true;
+      console.log(this.form);
+      this.toucheFields(true)
     }
   }
 }
