@@ -4,6 +4,7 @@ import { TypeCode } from '../Entities/TypeCode';
 import { Observable } from 'rxjs';
 import { Type } from '../Entities/Type';
 import { BodyCode } from '../Entities/BodyCode';
+import { Body } from '../Entities/Body';
 
 const DBURL = 'https://bl2-weapons-default-rtdb.firebaseio.com/';
 
@@ -41,5 +42,9 @@ export class DbFirebaseService {
       `${DBURL}BodyCode/${bodyCode.id}.json`,
       bodyCode
     );
+  }
+
+  addBody(body: Body): Observable<Body> {
+    return this.httpClient.put<Body>(`${DBURL}Body/${body.id}.json`, body);
   }
 }

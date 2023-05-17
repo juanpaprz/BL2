@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { AbstractControl, FormArray, FormGroup, ValidatorFn } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormGroup,
+  ValidatorFn,
+} from '@angular/forms';
 
 @Injectable()
 export class ValidationService {
@@ -27,43 +32,12 @@ export class ValidationService {
 }
 
 export function AtLeastOneCheckbox(): ValidatorFn {
-  return (formGroup: AbstractControl):{ [key: string]: any } | null => {
+  return (formArray: AbstractControl): { [key: string]: any } | null => {
     let valid = false;
-    let array = formGroup.get('types')
+    let array = formArray as FormArray;
     array?.controls.forEach((field) => {
-      if (field.value) valid = true;
+      if (field.get('value')?.value) valid = true;
     });
-    
-    if (valid) return null
-    else {
-      formArray.setErrors({ notSelected: true })
-      return { notSelected: true }
-    }
-  };
-}
-
-export function passwordMatch(password: string, confirmPassword: string):ValidatorFn {
-  return (formGroup: AbstractControl):{ [key: string]: any } | null => {
-    const passwordControl = formGroup.get(password);
-    const confirmPasswordControl = formGroup.get(confirmPassword);
-    
-    if (!passwordControl || !confirmPasswordControl) {
-      return null;
-    }
-
-    if (
-      confirmPasswordControl.errors &&
-      !confirmPasswordControl.errors.passwordMismatch
-    ) {
-      return null;
-    }
-
-    if (passwordControl.value !== confirmPasswordControl.value) {
-      confirmPasswordControl.setErrors({ passwordMismatch: true });
-      return { passwordMismatch: true }
-    } else {
-      confirmPasswordControl.setErrors(null);
-      return null;
-    }
+    return valid ? null : { error: true };
   };
 }

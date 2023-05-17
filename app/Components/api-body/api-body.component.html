@@ -28,13 +28,14 @@
         <li
           class="list-group-item"
           *ngFor="let typeCode of typeCodes; index as i"
+          [formGroupName]="i"
           [ngClass]="setInvalidClass('types')"
         >
           <input
             type="checkbox"
             [id]="typeCode.code"
             class="form-check-input me-1"
-            [formControlName]="i"
+            formControlName="value"
             [ngClass]="setInvalidClass('types')"
           />
           <label [for]="typeCode.code" class="form-check-label">{{

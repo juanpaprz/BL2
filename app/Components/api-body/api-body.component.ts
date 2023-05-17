@@ -7,6 +7,8 @@ import {
 import { BodyCode } from '../../Entities/BodyCode';
 import { ApiFirebaseService } from '../../Services/api-firebase.service';
 import { TypeCode } from '../../Entities/TypeCode';
+import { FrontBody } from '../../Entities/FrontEntities/FrontBody';
+import { Type } from '../../Entities/Type';
 
 @Component({
   selector: 'app-api-body',
@@ -18,6 +20,14 @@ export class ApiBodyComponent implements OnInit {
 
   bodyCodes: BodyCode[] = [];
   typeCodes: TypeCode[] = [];
+
+  bodyTypes: Type[] = [];
+  body: FrontBody = {
+    id: '',
+    code: '',
+    name: '',
+    types: this.bodyTypes,
+  };
 
   constructor(
     private dbService: ApiFirebaseService,
@@ -53,7 +63,12 @@ export class ApiBodyComponent implements OnInit {
 
         if (this.typeCodes.length) {
           this.typeCodes.forEach((typeCode) => {
-            this.types.push(new FormControl(false));
+            this.types.push(
+              new FormGroup({
+                value: new FormControl(false),
+                id: new FormControl(typeCode.id),
+              })
+            );
           });
         }
       },
@@ -70,9 +85,35 @@ export class ApiBodyComponent implements OnInit {
 
   addBody() {
     if (this.form.valid) {
+      let selectedBody = this.bodyCodes.find(
+        (b) => b.id == this.form.value.bodyId
+      );
+
+      if (!selectedBody) return;
+
+      this.body.code = selectedBody.code;
+      this.body.name = selectedBody.name;
+
+      let checkTypes = this.form.get('types') as FormArray;
+      let selectedTypes = checkTypes.controls.filter((t) => t.value.value);
+
+      selectedTypes.forEach((selectedType) => {
+        let type = this.typeCodes.find((t) => t.id == selectedType.value.id);
+        if (type) this.body.types.push(type);
+      });
+
+      this.dbService.addBody(this.body); /*.subscribe({
+        next: (response) => {
+          this.form.patchValue({
+            bodyid: '',
+            types: [],
+          });
+          this.form = this.validateService.toucheFields(this.form, false);
+        },
+      });*/
     } else {
       console.log(this.form);
-      this.validateService.toucheFields(this.form, true);
+      this.form = this.validateService.toucheFields(this.form, true);
     }
   }
 }

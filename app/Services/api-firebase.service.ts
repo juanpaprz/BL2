@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Type } from '../Entities/Type';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { TypeCode } from '../Entities/TypeCode';
 import { DbFirebaseService } from '../Services/db-firebase.service';
 import { BodyCode } from '../Entities/BodyCode';
+import { FrontBody } from '../Entities/FrontEntities/FrontBody';
+import { Body } from '../Entities/Body';
 
 @Injectable()
 export class ApiFirebaseService {
@@ -34,6 +36,32 @@ export class ApiFirebaseService {
   addBodyCode(bodyCode: BodyCode): Observable<BodyCode> {
     bodyCode.id = this.generateId();
     return this.dbService.addBodyCode(bodyCode);
+  }
+
+  addBody(frontBody: FrontBody) {
+    let bodies: Body[] = [];
+
+    let sendBody: Body = {
+      code: '',
+      id: '',
+      name: '',
+      typeId: '',
+    };
+
+    sendBody.code = frontBody.code;
+    sendBody.name = frontBody.name;
+
+    frontBody.types.forEach((type) => {
+      sendBody.id = this.generateId();
+      sendBody.typeId = type.id;
+
+      bodies.push(sendBody);
+    });
+
+    const reqs = bodies.map((body) => {
+      this.dbService.addBody(body).pipe();
+    });
+    console.log(reqs);
   }
 
   generateId() {
