@@ -27,7 +27,7 @@ export class ApiFirebaseService {
     return this.dbService.addType(type);
   }
 
-  getBodyCodes(): Observable<BodyCode[]> {
+  getAllBodyCodes(): Observable<BodyCode[]> {
     return this.dbService.getBodyCodes();
   }
 

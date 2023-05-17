@@ -1,0 +1,16 @@
+<h2>Weapon Body</h2>
+<hr />
+
+<div class="row">
+  <form [formGroup]="form" class="col-lg-6">
+    <div class="mb-3">
+      <label for="bodyCode" class="form-label">Body</label>
+      <select name="bodyCode" id="bodyCode" class="form-select">
+        <option value=""></option>
+        <option [value]="bodyCode.id" *ngFor="let bodyCode; for: bodyCodes">
+          {{ bodyCode.name }}
+        </option>
+      </select>
+    </div>
+  </form>
+</div>

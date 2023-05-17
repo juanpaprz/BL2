@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { ApiBodyCodeComponent } from './Components/api-body-code/api-body-code.component';
+import { ApiBodyComponent } from './Components/api-body/api-body.component';
 import { ApiManagementComponent } from './Components/api-management/api-management.component';
 import { ApiTypeCodeComponent } from './Components/api-type-code/api-type-code.component';
 import { ApiTypeComponent } from './Components/api-type/api-type.component';
@@ -20,6 +21,7 @@ const appRoutes: Routes = [
   { path: 'api/typecode', component: ApiTypeCodeComponent },
   { path: 'api/type', component: ApiTypeComponent },
   { path: 'api/bodycode', component: ApiBodyCodeComponent },
+  { path: 'api/body', component: ApiBodyComponent },
 ];
 
 @NgModule({
@@ -39,6 +41,7 @@ const appRoutes: Routes = [
     TableComponent,
     ApiBodyCodeComponent,
     InvalidFieldComponent,
+    ApiBodyComponent,
   ],
   bootstrap: [AppComponent],
 })

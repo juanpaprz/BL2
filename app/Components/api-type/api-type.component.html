@@ -3,20 +3,25 @@
 <hr />
 
 <div class="row">
-  <form #form="ngForm" class="col-lg-6" (ngSubmit)="addType()">
+  <form [formGroup]="form" class="col-lg-6" (ngSubmit)="addType()">
     <div class="mb-3">
       <label for="code" class="form-label">Type</label>
       <select
         name="code"
         id="code"
         class="form-select"
-        [(ngModel)]="typeCodeId"
+        formControlName="codeId"
+        [ngClass]="setInvalidClass('codeId')"
       >
         <option value=""></option>
         <option *ngFor="let typeCode of typeCodes" [value]="typeCode.id">
           {{ typeCode.name }}
         </option>
       </select>
+      <app-invalid-field
+        [message]="'The field Type is required'"
+        [display]="isFieldValid('codeId')"
+      ></app-invalid-field>
     </div>
     <div class="mb-3">
       <button type="submit" class="btn btn-primary">Submit</button>

@@ -1,4 +1,6 @@
 import { Component, Injectable, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ValidationService } from '../../Services/validation.service';
 import { Type } from '../../Entities/Type';
 import { TypeCode } from '../../Entities/TypeCode';
 import { ApiFirebaseService } from '../../Services/api-firebase.service';
@@ -10,11 +12,12 @@ import { ApiFirebaseService } from '../../Services/api-firebase.service';
 })
 @Injectable()
 export class ApiTypeComponent implements OnInit {
-  constructor(private dbService: ApiFirebaseService) {}
+  constructor(
+    private dbService: ApiFirebaseService,
+    private validateService: ValidationService
+  ) {}
 
   typeCodes: TypeCode[] = [];
-
-  typeCodeId: string = '';
 
   types: Type[] = [];
 
@@ -24,12 +27,18 @@ export class ApiTypeComponent implements OnInit {
     code: '',
   };
 
+  form: FormGroup = new FormGroup({});
+
   headers: string[] = [];
   values: any[] = [];
 
   ngOnInit() {
     this.getTypeCodes();
     this.getTypes();
+
+    this.form = new FormGroup({
+      codeId: new FormControl('', Validators.required),
+    });
   }
 
   getTypes() {
@@ -56,20 +65,36 @@ export class ApiTypeComponent implements OnInit {
     });
   }
 
+  isFieldValid(field: string): boolean {
+    return this.validateService.isFieldValid(this.form, field);
+  }
+
+  setInvalidClass(field: string) {
+    return this.validateService.setInvalidClass(this.form, field);
+  }
+
   addType() {
-    let selectedTypeCode = this.typeCodes.find((t) => t.id == this.typeCodeId);
+    if (this.form.valid) {
+      let selectedTypeCode = this.typeCodes.find(
+        (t) => t.id == this.form.value.codeId
+      );
 
-    if (!selectedTypeCode) return;
+      if (!selectedTypeCode) return;
 
-    this.type.name = selectedTypeCode.name;
-    this.type.code = selectedTypeCode.code;
+      this.type.name = selectedTypeCode.name;
+      this.type.code = selectedTypeCode.code;
 
-    this.dbService.addType(this.type).subscribe({
-      next: (response) => {
-        console.log(response);
-        this.typeCodeId = '';
-        this.getTypes();
-      },
-    });
+      this.dbService.addType(this.type).subscribe({
+        next: (response) => {
+          console.log(response);
+          this.form.patchValue({
+            codeId: '',
+          });
+          this.getTypes();
+        },
+      });
+    } else {
+      this.form = this.validateService.toucheFields(this.form, true);
+    }
   }
 }

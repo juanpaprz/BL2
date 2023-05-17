@@ -1,19 +1,27 @@
 import { Injectable } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 
 @Injectable()
 export class ValidationService {
+  constructor() {}
 
-  constructor() { }
-
-  isFieldValid(form: FormControl, field: string): boolean {
+  isFieldValid(form: FormGroup, field: string): boolean {
     return !form.get(field)?.valid && form.get(field)?.touched!;
   }
 
-  setInvalidClass(form: FormControl, field: string) {
+  setInvalidClass(form: FormGroup, field: string) {
     return {
-      'border-danger': this.isFieldValid(field),
+      'border-danger': this.isFieldValid(form, field),
     };
   }
 
+  toucheFields(form: FormGroup, touche: boolean) {
+    Object.keys(form.controls).forEach((field) => {
+      const control = form.get(field);
+      if (touche) control?.markAsTouched({ onlySelf: true });
+      else control?.markAsUntouched({ onlySelf: true });
+    });
+
+    return form;
+  }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiFirebaseService } from '../../Services/api-firebase.service';
 import { BodyCode } from '../../Entities/BodyCode';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ValidationService } from '../../Services/validation.service';
 
 @Component({
   selector: 'app-api-body-code',
@@ -9,7 +10,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./api-body-code.component.css'],
 })
 export class ApiBodyCodeComponent implements OnInit {
-  constructor(private dbService: ApiFirebaseService) {}
+  constructor(
+    private dbService: ApiFirebaseService,
+    private validateService: ValidationService
+  ) {}
 
   bodyCode: BodyCode = {
     id: '',
@@ -35,7 +39,7 @@ export class ApiBodyCodeComponent implements OnInit {
   }
 
   getBodyCodes() {
-    this.dbService.getBodyCodes().subscribe({
+    this.dbService.getAllBodyCodes().subscribe({
       next: (response) => {
         if (response) this.bodyCodes = Object.values(response);
       },
@@ -43,23 +47,11 @@ export class ApiBodyCodeComponent implements OnInit {
   }
 
   isFieldValid(field: string): boolean {
-    return !this.form.get(field)?.valid && this.form.get(field)?.touched!;
+    return this.validateService.isFieldValid(this.form, field);
   }
 
   setInvalidClass(field: string) {
-    return {
-      'border-danger': this.isFieldValid(field),
-    };
-  }
-
-  toucheFields(touche: boolean) {
-    Object.keys(this.form.controls).forEach((field) => {
-      const control = this.form.get(field);
-      if (touche)
-        control?.markAsTouched({ onlySelf: true });
-      else
-        control?.markAsUntouched({ onlySelf: true });
-    });
+    return this.validateService.setInvalidClass(this.form, field);
   }
 
   addBodyCode() {
@@ -74,13 +66,13 @@ export class ApiBodyCodeComponent implements OnInit {
             code: '',
             name: '',
           });
-          this.toucheFields(false)
+          this.form = this.validateService.toucheFields(this.form, false);
           this.getBodyCodes();
         },
       });
     } else {
       console.log(this.form);
-      this.toucheFields(true)
+      this.form = this.validateService.toucheFields(this.form, true);
     }
   }
 }
