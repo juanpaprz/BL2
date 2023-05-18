@@ -1,5 +1,8 @@
 <div class="row">
-  
+  <app-table-display-select
+    (changeDisplayEmitter)="changeDisplay($event)"
+  ></app-table-display-select>
+  <app-table-filter></app-table-filter>
 </div>
 
 <table class="table table-sm table-striped">
@@ -14,7 +17,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let value of values">
+    <tr *ngFor="let value of displayData">
       <td *ngFor="let data of value" [ngClass]="isId(data) ? 'd-none' : ''">
         {{ data }}
       </td>

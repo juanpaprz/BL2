@@ -12,6 +12,7 @@ import { ApiTypeCodeComponent } from './Components/api-type-code/api-type-code.c
 import { ApiTypeComponent } from './Components/api-type/api-type.component';
 import { InvalidFieldComponent } from './Components/Common/invalid-field/invalid-field.component';
 import { TableDisplaySelectComponent } from './Components/Common/table-display-select/table-display-select.component';
+import { TableFilterComponent } from './Components/Common/table-filter/table-filter.component';
 import { TableComponent } from './Components/Common/table/table.component';
 import { ApiFirebaseService } from './Services/api-firebase.service';
 import { BodyControllerService } from './Services/Controllers/body-controller.service';
@@ -52,6 +53,7 @@ const appRoutes: Routes = [
     InvalidFieldComponent,
     ApiBodyComponent,
     TableDisplaySelectComponent,
+    TableFilterComponent,
   ],
   bootstrap: [AppComponent],
 })

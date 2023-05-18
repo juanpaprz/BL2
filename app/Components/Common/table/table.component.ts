@@ -12,6 +12,9 @@ export class TableComponent implements OnInit, OnChanges {
 
   @Input() hideId: boolean = true;
 
+  displayData: any[] = [];
+  displayValue: number = 10;
+
   constructor() {}
 
   ngOnInit() {}
@@ -20,9 +23,16 @@ export class TableComponent implements OnInit, OnChanges {
     this.headers.forEach((header, index) => {
       this.headers[index] = header[0].toUpperCase() + header.slice(1);
     });
+
+    this.displayData = this.values.slice(0, this.displayValue);
   }
 
   isId(value: string): boolean {
     return value.includes('id:');
+  }
+
+  changeDisplay(value: number) {
+    this.displayValue = value;
+    this.displayData = this.values.slice(0, this.displayValue);
   }
 }
