@@ -1,8 +1,15 @@
-<div class="row">
-  <app-table-display-select
-    (changeDisplayEmitter)="changeDisplay($event)"
-  ></app-table-display-select>
-  <app-table-filter></app-table-filter>
+<div class="row mb-2">
+  <div class="col-5">
+    <app-table-display-select
+      (changeDisplayEmitter)="changeDisplay($event)"
+    ></app-table-display-select>
+  </div>
+  <div class="col-2"></div>
+  <div class="col-5">
+    <app-table-filter
+      (filterDataEmitter)="filterData($event)"
+    ></app-table-filter>
+  </div>
 </div>
 
 <table class="table table-sm table-striped">

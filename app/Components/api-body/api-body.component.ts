@@ -10,6 +10,7 @@ import { FrontBody } from '../../Entities/FrontEntities/FrontBody';
 import { Type } from '../../Entities/Type';
 import { BodyControllerService } from '../../Services/Controllers/body-controller.service';
 import { TypeControllerService } from '../../Services/Controllers/type-controller.service';
+import { AnyCatcher } from 'rxjs/internal/AnyCatcher';
 
 @Component({
   selector: 'app-api-body',
@@ -32,7 +33,7 @@ export class ApiBodyComponent implements OnInit {
   };
 
   headers: string[] = [];
-  values: any[] = [];
+  values: string[][] = [];
 
   constructor(
     private validateService: ValidationService,

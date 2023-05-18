@@ -8,12 +8,14 @@ import { Component, Input, OnInit, OnChanges } from '@angular/core';
 export class TableComponent implements OnInit, OnChanges {
   @Input() headers: string[] = [];
 
-  @Input() values: any[] = [];
+  @Input() values: string[][] = [];
 
   @Input() hideId: boolean = true;
 
-  displayData: any[] = [];
+  displayData: string[][] = [];
   displayValue: number = 10;
+  filterValue: string = '';
+  filteredData: string[][] = [];
 
   constructor() {}
 
@@ -24,7 +26,8 @@ export class TableComponent implements OnInit, OnChanges {
       this.headers[index] = header[0].toUpperCase() + header.slice(1);
     });
 
-    this.displayData = this.values.slice(0, this.displayValue);
+    this.filteredData = this.values;
+    this.displayData = this.filteredData.slice(0, this.displayValue);
   }
 
   isId(value: string): boolean {
@@ -33,6 +36,16 @@ export class TableComponent implements OnInit, OnChanges {
 
   changeDisplay(value: number) {
     this.displayValue = value;
-    this.displayData = this.values.slice(0, this.displayValue);
+    this.displayData = this.filteredData.slice(0, this.displayValue);
+  }
+
+  filterData(value: string) {
+    this.filteredData = this.values.filter((v) =>
+      v.some((f) => {
+        let lower = f.toLowerCase();
+        return lower.includes(value);
+      })
+    );
+    this.displayData = this.filteredData.slice(0, this.displayValue);
   }
 }

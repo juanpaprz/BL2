@@ -30,7 +30,7 @@ export class ApiTypeComponent implements OnInit {
   form: FormGroup = new FormGroup({});
 
   headers: string[] = [];
-  values: any[] = [];
+  values: string[][] = [];
 
   ngOnInit() {
     this.getTypeCodes();
