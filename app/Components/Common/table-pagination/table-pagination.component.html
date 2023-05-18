@@ -9,7 +9,9 @@
           </button>
         </li>
         <li class="page-item" *ngFor="let page of pagesDisplay">
-          <button class="page-link text-black">{{ page }}</button>
+          <button class="page-link text-black" (click)="changePage(page)">
+            {{ page }}
+          </button>
         </li>
         <li class="page-item ms-1">
           <button class="page-link" aria-label="Next text-black">

@@ -31,6 +31,8 @@ export class TablePaginationComponent implements OnInit, OnChanges {
   getPages() {
     let total = Math.ceil(this.totalData / this.displayValue);
 
+    this.pages = [];
+
     for (let i = 0; i < total; i++) {
       this.pages.push(i + 1);
     }
@@ -39,12 +41,24 @@ export class TablePaginationComponent implements OnInit, OnChanges {
   getPagesDisplay() {
     this.getPages();
 
+    console.log(this.pages);
+
     if (this.pages.length <= 3) {
       this.pagesDisplay = this.pages;
       return;
     }
 
+    if (this.currentPage + 3 > this.pages.length) {
+      console.log(this.currentPage);
+      return;
+    }
+
     this.pagesDisplay = this.pages.slice(this.currentPage, 3);
     console.log(this.pagesDisplay);
+  }
+
+  changePage(page: number) {
+    this.currentPage = page - 1;
+    this.getPagesDisplay();
   }
 }
