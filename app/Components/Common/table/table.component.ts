@@ -48,4 +48,11 @@ export class TableComponent implements OnInit, OnChanges {
     );
     this.displayData = this.filteredData.slice(0, this.displayValue);
   }
+
+  changePage(value: number) {
+    this.displayData = this.filteredData.slice(
+      this.displayValue * value,
+      this.displayValue * (value + 1)
+    );
+  }
 }

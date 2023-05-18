@@ -34,7 +34,8 @@
 
 <div class="">
   <app-table-pagination
-    [totalData]="values.length"
+    [totalData]="filteredData.length"
     [displayValue]="displayValue"
+    (currentPageEmitter)="changePage($event)"
   ></app-table-pagination>
 </div>

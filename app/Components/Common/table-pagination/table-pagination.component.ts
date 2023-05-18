@@ -1,4 +1,11 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+} from '@angular/core';
 
 @Component({
   selector: 'app-table-pagination',
@@ -10,19 +17,25 @@ export class TablePaginationComponent implements OnInit, OnChanges {
 
   @Input() displayValue: number = 0;
 
+  @Output() currentPageEmitter = new EventEmitter<number>();
+
   constructor() {}
 
   pages: number[] = [];
   pagesDisplay: number[] = [];
 
   currentPage: number = 0;
+  startValue: number = 0;
 
   ngOnInit() {}
 
   ngOnChanges() {
     if (this.totalData > 0) {
-      if (this.displayValue > this.totalData)
-        this.displayValue = this.totalData;
+      this.startValue = this.displayValue;
+
+      if (this.startValue > this.totalData) this.startValue = this.totalData;
+
+      this.currentPage = 0;
 
       this.getPagesDisplay();
     }
@@ -41,24 +54,72 @@ export class TablePaginationComponent implements OnInit, OnChanges {
   getPagesDisplay() {
     this.getPages();
 
-    console.log(this.pages);
+    this.startValue = this.displayValue * (this.currentPage + 1);
+
+    if (this.startValue > this.totalData) this.startValue = this.totalData;
+
+    this.currentPageEmitter.emit(this.currentPage);
 
     if (this.pages.length <= 3) {
       this.pagesDisplay = this.pages;
       return;
     }
 
-    if (this.currentPage + 3 > this.pages.length) {
-      console.log(this.currentPage);
+    if (this.currentPage == 0) {
+      this.pagesDisplay = [
+        this.pages[this.currentPage],
+        this.pages[this.currentPage + 1],
+        this.pages[this.currentPage + 2],
+      ];
       return;
     }
 
-    this.pagesDisplay = this.pages.slice(this.currentPage, 3);
-    console.log(this.pagesDisplay);
+    if (this.currentPage == this.pages.length - 1) {
+      this.pagesDisplay = [
+        this.pages[this.currentPage - 2],
+        this.pages[this.currentPage - 1],
+        this.pages[this.currentPage],
+      ];
+      return;
+    }
+
+    this.pagesDisplay = [
+      this.pages[this.currentPage - 1],
+      this.pages[this.currentPage],
+      this.pages[this.currentPage + 1],
+    ];
   }
 
   changePage(page: number) {
     this.currentPage = page - 1;
     this.getPagesDisplay();
+  }
+
+  nextPage() {
+    this.currentPage++;
+    this.getPagesDisplay();
+  }
+
+  previousPage() {
+    this.currentPage--;
+    this.getPagesDisplay();
+  }
+
+  setActiveClass(page: number) {
+    return {
+      active: this.currentPage == page - 1,
+    };
+  }
+
+  setDisablePreviousClass() {
+    return {
+      disabled: this.currentPage == 0,
+    };
+  }
+
+  setDisableNextClass() {
+    return {
+      disabled: this.currentPage == this.pages.length - 1,
+    };
   }
 }
