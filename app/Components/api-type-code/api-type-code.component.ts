@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ValidationService } from '../../Services/validation.service';
 import { TypeCode } from '../../Entities/TypeCode';
-import { ApiFirebaseService } from '../../Services/api-firebase.service';
+import { TypeControllerService } from '../../Services/Controllers/type-controller.service';
 
 @Component({
   selector: 'app-api-type-code',
@@ -21,8 +21,8 @@ export class ApiTypeCodeComponent implements OnInit {
   form: FormGroup = new FormGroup({});
 
   constructor(
-    private dbService: ApiFirebaseService,
-    private validateService: ValidationService
+    private validateService: ValidationService,
+    private typeService: TypeControllerService
   ) {}
 
   ngOnInit() {
@@ -39,7 +39,7 @@ export class ApiTypeCodeComponent implements OnInit {
   }
 
   getTypeCodes() {
-    this.dbService.getAllTypeCodes().subscribe({
+    this.typeService.getAllTypeCodes().subscribe({
       next: (response) => {
         if (response) this.typeCodes = Object.values(response);
       },
@@ -59,7 +59,7 @@ export class ApiTypeCodeComponent implements OnInit {
       this.typeCode.code = this.form.value.code;
       this.typeCode.name = this.form.value.name;
 
-      this.dbService.addBodyCode(this.typeCode).subscribe({
+      this.typeService.addTypeCode(this.typeCode).subscribe({
         next: (response) => {
           console.log(response);
           this.form.patchValue({

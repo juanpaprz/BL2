@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Type } from '../Entities/Type';
-import { forkJoin, Observable } from 'rxjs';
+import { catchError, forkJoin, Observable, of, tap } from 'rxjs';
 import { TypeCode } from '../Entities/TypeCode';
 import { DbFirebaseService } from '../Services/db-firebase.service';
 import { BodyCode } from '../Entities/BodyCode';
@@ -47,21 +47,41 @@ export class ApiFirebaseService {
       name: '',
       typeId: '',
     };
-
-    sendBody.code = frontBody.code;
-    sendBody.name = frontBody.name;
-
     frontBody.types.forEach((type) => {
+      sendBody.code = frontBody.code;
+      sendBody.name = frontBody.name;
       sendBody.id = this.generateId();
       sendBody.typeId = type.id;
 
       bodies.push(sendBody);
+
+      sendBody = {
+        code: '',
+        id: '',
+        name: '',
+        typeId: '',
+      };
     });
 
-    const reqs = bodies.map((body) => {
-      this.dbService.addBody(body).pipe();
+    let observables: Observable<Body>[] = [];
+
+    bodies.forEach((body) => {
+      observables.push(
+        this.dbService.addBody(body).pipe(
+          tap(),
+          catchError((e) => {
+            e++;
+            return of(e);
+          })
+        )
+      );
     });
-    console.log(reqs);
+
+    return forkJoin(observables);
+  }
+
+  getAllBodies(){
+    
   }
 
   generateId() {

@@ -44,6 +44,10 @@ export class DbFirebaseService {
     );
   }
 
+  getBodies(): Observable<Body[]> {
+    return this.httpClient.get<Body[]>(DBURL + 'Body.json');
+  }
+
   addBody(body: Body): Observable<Body> {
     return this.httpClient.put<Body>(`${DBURL}Body/${body.id}.json`, body);
   }

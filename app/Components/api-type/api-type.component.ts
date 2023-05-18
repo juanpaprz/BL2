@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ValidationService } from '../../Services/validation.service';
 import { Type } from '../../Entities/Type';
 import { TypeCode } from '../../Entities/TypeCode';
-import { ApiFirebaseService } from '../../Services/api-firebase.service';
+import { TypeControllerService } from '../../Services/Controllers/type-controller.service';
 
 @Component({
   selector: 'app-api-type',
@@ -13,8 +13,8 @@ import { ApiFirebaseService } from '../../Services/api-firebase.service';
 @Injectable()
 export class ApiTypeComponent implements OnInit {
   constructor(
-    private dbService: ApiFirebaseService,
-    private validateService: ValidationService
+    private validateService: ValidationService,
+    private typeService: TypeControllerService
   ) {}
 
   typeCodes: TypeCode[] = [];
@@ -42,7 +42,7 @@ export class ApiTypeComponent implements OnInit {
   }
 
   getTypes() {
-    this.dbService.getAllTypes().subscribe({
+    this.typeService.getAllTypes().subscribe({
       next: (response) => {
         if (response) this.types = Object.values(response);
 
@@ -58,7 +58,7 @@ export class ApiTypeComponent implements OnInit {
   }
 
   getTypeCodes() {
-    this.dbService.getAllTypeCodes().subscribe({
+    this.typeService.getAllTypeCodes().subscribe({
       next: (response) => {
         if (response) this.typeCodes = Object.values(response);
       },
@@ -84,7 +84,7 @@ export class ApiTypeComponent implements OnInit {
       this.type.name = selectedTypeCode.name;
       this.type.code = selectedTypeCode.code;
 
-      this.dbService.addType(this.type).subscribe({
+      this.typeService.addType(this.type).subscribe({
         next: (response) => {
           console.log(response);
           this.form.patchValue({

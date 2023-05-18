@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiFirebaseService } from '../../Services/api-firebase.service';
 import { BodyCode } from '../../Entities/BodyCode';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ValidationService } from '../../Services/validation.service';
+import { BodyControllerService } from '../../Services/Controllers/body-controller.service';
 
 @Component({
   selector: 'app-api-body-code',
@@ -11,8 +11,8 @@ import { ValidationService } from '../../Services/validation.service';
 })
 export class ApiBodyCodeComponent implements OnInit {
   constructor(
-    private dbService: ApiFirebaseService,
-    private validateService: ValidationService
+    private validateService: ValidationService,
+    private bodyService: BodyControllerService
   ) {}
 
   bodyCode: BodyCode = {
@@ -39,7 +39,7 @@ export class ApiBodyCodeComponent implements OnInit {
   }
 
   getBodyCodes() {
-    this.dbService.getAllBodyCodes().subscribe({
+    this.bodyService.getAllBodyCodes().subscribe({
       next: (response) => {
         if (response) this.bodyCodes = Object.values(response);
       },
@@ -59,7 +59,7 @@ export class ApiBodyCodeComponent implements OnInit {
       this.bodyCode.code = this.form.value.code;
       this.bodyCode.name = this.form.value.name;
 
-      this.dbService.addBodyCode(this.bodyCode).subscribe({
+      this.bodyService.addBodyCode(this.bodyCode).subscribe({
         next: (response) => {
           console.log(response);
           this.form.patchValue({

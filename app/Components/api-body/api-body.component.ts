@@ -5,10 +5,11 @@ import {
   ValidationService,
 } from '../../Services/validation.service';
 import { BodyCode } from '../../Entities/BodyCode';
-import { ApiFirebaseService } from '../../Services/api-firebase.service';
 import { TypeCode } from '../../Entities/TypeCode';
 import { FrontBody } from '../../Entities/FrontEntities/FrontBody';
 import { Type } from '../../Entities/Type';
+import { BodyControllerService } from '../../Services/Controllers/body-controller.service';
+import { TypeControllerService } from '../../Services/Controllers/type-controller.service';
 
 @Component({
   selector: 'app-api-body',
@@ -30,8 +31,9 @@ export class ApiBodyComponent implements OnInit {
   };
 
   constructor(
-    private dbService: ApiFirebaseService,
-    private validateService: ValidationService
+    private validateService: ValidationService,
+    private bodyService: BodyControllerService,
+    private typeService: TypeControllerService
   ) {}
 
   ngOnInit() {
@@ -42,6 +44,8 @@ export class ApiBodyComponent implements OnInit {
 
     this.getBodyCodes();
     this.getTypeCodes();
+
+    this.bodyService.getAllBodies();
   }
 
   get types() {
@@ -49,7 +53,7 @@ export class ApiBodyComponent implements OnInit {
   }
 
   getBodyCodes() {
-    this.dbService.getAllBodyCodes().subscribe({
+    this.bodyService.getAllBodyCodes().subscribe({
       next: (response) => {
         if (response) this.bodyCodes = Object.values(response);
       },
@@ -57,7 +61,7 @@ export class ApiBodyComponent implements OnInit {
   }
 
   getTypeCodes() {
-    this.dbService.getAllTypeCodes().subscribe({
+    this.typeService.getAllTypeCodes().subscribe({
       next: (response) => {
         if (response) this.typeCodes = Object.values(response);
 
@@ -83,6 +87,18 @@ export class ApiBodyComponent implements OnInit {
     return this.validateService.setInvalidClass(this.form, field);
   }
 
+  clearForm() {
+    let clearTypes: { [key: string]: any } = [];
+    this.typeCodes.forEach((typeCode) => {
+      clearTypes.push({ value: false, id: typeCode.id });
+    });
+
+    this.form.patchValue({
+      bodyId: '',
+      types: clearTypes,
+    });
+  }
+
   addBody() {
     if (this.form.valid) {
       let selectedBody = this.bodyCodes.find(
@@ -102,18 +118,16 @@ export class ApiBodyComponent implements OnInit {
         if (type) this.body.types.push(type);
       });
 
-      this.dbService.addBody(this.body); /*.subscribe({
+      this.bodyService.addBody(this.body).subscribe({
         next: (response) => {
-          this.form.patchValue({
-            bodyid: '',
-            types: [],
-          });
+          console.log(response);
+          this.clearForm();
           this.form = this.validateService.toucheFields(this.form, false);
         },
-      });*/
+      });
     } else {
-      console.log(this.form);
       this.form = this.validateService.toucheFields(this.form, true);
+      console.log(this.form);
     }
   }
 }
