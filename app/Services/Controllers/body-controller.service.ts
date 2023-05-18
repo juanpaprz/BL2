@@ -1,11 +1,11 @@
-import { Injectable, Type } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Body } from '../../Entities/Body';
 import { BodyCode } from '../../Entities/BodyCode';
 import { FrontBody } from '../../Entities/FrontEntities/FrontBody';
 import { ApiFirebaseService } from '../../Services/api-firebase.service';
-import { catchError, forkJoin, map, Observable, of, tap } from 'rxjs';
+import { forkJoin, map, Observable, of, tap } from 'rxjs';
 import { DbFirebaseService } from '../../Services/db-firebase.service';
-import { TypeCode } from 'app/Entities/TypeCode';
+import { TypeCode } from '../../Entities/TypeCode';
 
 @Injectable()
 export class BodyControllerService {
@@ -56,12 +56,17 @@ export class BodyControllerService {
 
     return forkJoin(observables);
   }
-
-  getAllBodies(): Observable<TypeCode[]> {
-    return forkJoin([this.dbService.getTypeCodes(), this.dbService.getBodies()]).pipe(
+  getAllBodies(): Observable<FrontBody[]> {
+    return forkJoin([
+      this.dbService.getTypeCodes(),
+      this.dbService.getBodies(),
+    ]).pipe(
       map((response) => {
         let typeCodes = Object.values(response[0]);
         let frontBodies: FrontBody[] = [];
+
+        if (!response[1]) return frontBodies;
+
         Object.values(response[1]).forEach((b) => {
           let frontBody: FrontBody = {
             id: b.id,
@@ -72,28 +77,6 @@ export class BodyControllerService {
           frontBodies.push(frontBody);
         });
         return frontBodies;
-      })
-    );
-    return this.dbService.getTypeCodes().pipe(
-      map((type) => {
-        let typeCodes = Object.values(type);
-
-        let frontBodies: FrontBody[] = [];
-
-        return this.dbService.getBodies().pipe(
-          map((body) => {
-            Object.values(body).forEach((b) => {
-              let frontBody: FrontBody = {
-                id: b.id,
-                code: b.code,
-                name: b.name,
-                types: [typeCodes.find((t) => t.id == b.typeId)!],
-              };
-              frontBodies.push(frontBody);
-            });
-            return frontBodies;
-          })
-        );
       })
     );
   }

@@ -44,7 +44,10 @@ export class ApiTypeComponent implements OnInit {
   getTypes() {
     this.typeService.getAllTypes().subscribe({
       next: (response) => {
-        if (response) this.types = Object.values(response);
+        if (response)
+          this.types = Object.values(response).sort((a, b) =>
+            a.name > b.name ? 1 : -1
+          );
 
         if (this.types.length) {
           this.headers = Object.keys(this.types[0]);
@@ -60,7 +63,10 @@ export class ApiTypeComponent implements OnInit {
   getTypeCodes() {
     this.typeService.getAllTypeCodes().subscribe({
       next: (response) => {
-        if (response) this.typeCodes = Object.values(response);
+        if (response)
+          this.typeCodes = Object.values(response).sort((a, b) =>
+            a.name > b.name ? 1 : -1
+          );
       },
     });
   }

@@ -21,6 +21,7 @@ export class ApiBodyComponent implements OnInit {
 
   bodyCodes: BodyCode[] = [];
   typeCodes: TypeCode[] = [];
+  bodies: FrontBody[] = [];
 
   bodyTypes: Type[] = [];
   body: FrontBody = {
@@ -29,6 +30,9 @@ export class ApiBodyComponent implements OnInit {
     name: '',
     types: this.bodyTypes,
   };
+
+  headers: string[] = [];
+  values: any[] = [];
 
   constructor(
     private validateService: ValidationService,
@@ -44,18 +48,39 @@ export class ApiBodyComponent implements OnInit {
 
     this.getBodyCodes();
     this.getTypeCodes();
-
-    this.bodyService.getAllBodies();
+    this.getBodies();
   }
 
   get types() {
     return this.form.get('types') as FormArray;
   }
 
+  getBodies() {
+    this.bodyService.getAllBodies().subscribe({
+      next: (response) => {
+        if (response) this.bodies = Object.values(response);
+
+        if (this.bodies.length) {
+          this.values = [];
+
+          this.headers = Object.keys(this.bodies[0]);
+
+          this.bodies.forEach((b) => {
+            this.values.push([b.code, 'id: ' + b.id, b.name, b.types[0].name]);
+          });
+          this.values = this.values.sort((a, b) => (a > b ? 1 : -1));
+        }
+      },
+    });
+  }
+
   getBodyCodes() {
     this.bodyService.getAllBodyCodes().subscribe({
       next: (response) => {
-        if (response) this.bodyCodes = Object.values(response);
+        if (response)
+          this.bodyCodes = Object.values(response).sort((a, b) =>
+            a.name > b.name ? 1 : -1
+          );
       },
     });
   }
@@ -63,7 +88,10 @@ export class ApiBodyComponent implements OnInit {
   getTypeCodes() {
     this.typeService.getAllTypeCodes().subscribe({
       next: (response) => {
-        if (response) this.typeCodes = Object.values(response);
+        if (response)
+          this.typeCodes = Object.values(response).sort((a, b) =>
+            a.name > b.name ? 1 : -1
+          );
 
         if (this.typeCodes.length) {
           this.typeCodes.forEach((typeCode) => {
@@ -113,6 +141,8 @@ export class ApiBodyComponent implements OnInit {
       let checkTypes = this.form.get('types') as FormArray;
       let selectedTypes = checkTypes.controls.filter((t) => t.value.value);
 
+      this.body.types = [];
+
       selectedTypes.forEach((selectedType) => {
         let type = this.typeCodes.find((t) => t.id == selectedType.value.id);
         if (type) this.body.types.push(type);
@@ -123,6 +153,7 @@ export class ApiBodyComponent implements OnInit {
           console.log(response);
           this.clearForm();
           this.form = this.validateService.toucheFields(this.form, false);
+          this.getBodies();
         },
       });
     } else {

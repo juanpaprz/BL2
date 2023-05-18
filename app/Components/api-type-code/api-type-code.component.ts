@@ -41,7 +41,10 @@ export class ApiTypeCodeComponent implements OnInit {
   getTypeCodes() {
     this.typeService.getAllTypeCodes().subscribe({
       next: (response) => {
-        if (response) this.typeCodes = Object.values(response);
+        if (response)
+          this.typeCodes = Object.values(response).sort((a, b) =>
+            a.name > b.name ? 1 : -1
+          );
       },
     });
   }

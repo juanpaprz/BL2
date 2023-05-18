@@ -41,7 +41,10 @@ export class ApiBodyCodeComponent implements OnInit {
   getBodyCodes() {
     this.bodyService.getAllBodyCodes().subscribe({
       next: (response) => {
-        if (response) this.bodyCodes = Object.values(response);
+        if (response)
+          this.bodyCodes = Object.values(response).sort((a, b) =>
+            a.name > b.name ? 1 : -1
+          );
       },
     });
   }
