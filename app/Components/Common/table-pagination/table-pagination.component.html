@@ -1,0 +1,22 @@
+<div class="d-flex justify-content-between">
+  <div>{{ displayValue }} of {{ totalData }} elements</div>
+  <div>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination pagination-sm">
+        <li class="page-item me-1">
+          <button class="page-link" aria-label="Previous">
+            <span class="text-black" aria-hidden="true">&laquo;</span>
+          </button>
+        </li>
+        <li class="page-item" *ngFor="let page of pagesDisplay">
+          <button class="page-link text-black">{{ page }}</button>
+        </li>
+        <li class="page-item ms-1">
+          <button class="page-link" aria-label="Next text-black">
+            <span class="text-black" aria-hidden="true">&raquo;</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
