@@ -63,10 +63,11 @@ export class BodyControllerService {
       this.dbService.getBodies(),
     ]).pipe(
       map((response) => {
-        let typeCodes = Object.values(response[0]);
         let frontBodies: FrontBody[] = [];
 
-        if (!response[1]) return frontBodies;
+        if (!response[0] || !response[1]) return frontBodies;
+
+        let typeCodes = Object.values(response[0]);
 
         Object.values(response[1]).forEach((b) => {
           let frontBody: FrontBody = {
@@ -74,6 +75,38 @@ export class BodyControllerService {
             code: b.code,
             name: b.name,
             types: [typeCodes.find((t) => t.id == b.typeId)!],
+          };
+          frontBodies.push(frontBody);
+        });
+        return frontBodies;
+      })
+    );
+  }
+
+  getAllFrontBodies(): Observable<FrontBody[]> {
+    return forkJoin([
+      this.dbService.getTypeCodes(),
+      this.dbService.getBodyCodes(),
+      this.dbService.getBodies(),
+    ]).pipe(
+      map((response) => {
+        let frontBodies: FrontBody[] = [];
+
+        if (!response[0] || !response[1] || !response[2]) return frontBodies;
+
+        let typeCodes = Object.values(response[0]);
+        let bodies = Object.values(response[2]);
+
+        Object.values(response[1]).forEach((bc) => {
+          let frontBody: FrontBody = {
+            id: bc.id,
+            code: bc.code,
+            name: bc.name,
+            types: typeCodes.filter((t) =>
+              bodies
+                .filter((b) => b.code == bc.code)
+                .some((b) => b.typeId == t.id)
+            ),
           };
           frontBodies.push(frontBody);
         });

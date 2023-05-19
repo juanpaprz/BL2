@@ -1,0 +1,83 @@
+<h2>Weapon Rarity</h2>
+<hr />
+
+<div class="row">
+  <form [formGroup]="form" class="col-lg-6">
+    <div class="mb-3">
+      <label for="rarityId" class="form-label">Rarity</label>
+      <select
+        name="rarityId"
+        id="rarityId"
+        class="form-select"
+        formControlName="rarityId"
+        [ngClass]="setInvalidClass('rarityId')"
+      >
+        <option value=""></option>
+        <option *ngFor="let rarityCode of rarityCodes" [value]="rarityCode.id">
+          {{ rarityCode.name }}
+        </option>
+      </select>
+      <app-invalid-field
+        [message]="'The field Rarity is required'"
+        [display]="isFieldValid('rarityId')"
+      ></app-invalid-field>
+    </div>
+    <div class="mb-3" formArrayName="bodies">
+      <label class="form-label">Bodies</label>
+      <ul class="list-group">
+        <li
+          class="list-group-item"
+          *ngFor="let frontBody of frontBodies; index as i"
+          [formGroupName]="i"
+          [ngClass]="setInvalidClass('bodies')"
+        >
+          <div class="form-check form-switch">
+            <input
+              [id]="frontBody.code"
+              type="checkbox"
+              class="form-check-input"
+              role="switch"
+              formControlName="value"
+              [ngClass]="setInvalidClass('bodies')"
+            />
+            <label [for]="frontBody.code" class="form-check-label">{{
+              frontBody.name
+            }}</label>
+          </div>
+          <div class="container mt-2" formArrayName="types">
+            <small class="card-tittle">Types</small>
+            <ul class="list-group list-group-flush">
+              <li
+                class="list-group-item"
+                *ngFor="let type of frontBody.types; index as j"
+                [formGroupName]="j"
+                [ngClass]="setInvalidClass('types')"
+              >
+                <input
+                  [id]="frontBody.code + '-' + type.code"
+                  type="checkbox"
+                  class="form-check-input me-1"
+                  formControlName="value"
+                  [ngClass]="setInvalidClass('types')"
+                />
+                <label
+                  [for]="frontBody.code + '-' + type.code"
+                  class="form-check-label"
+                  >{{ type.name }}</label
+                >
+              </li>
+            </ul>
+            <app-invalid-field
+              [message]="'Check at least one Type'"
+              [display]="isFieldValid('types')"
+            ></app-invalid-field>
+          </div>
+        </li>
+      </ul>
+      <app-invalid-field
+        [message]="'Check at least one Body'"
+        [display]="isFieldValid('bodies')"
+      ></app-invalid-field>
+    </div>
+  </form>
+</div>
