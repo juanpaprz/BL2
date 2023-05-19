@@ -1,0 +1,99 @@
+<h2>Rarity Codes</h2>
+<hr />
+
+<div class="row">
+  <form class="col-lg-6" [formGroup]="form" (ngSubmit)="addRarityCode()">
+    <div class="mb-3">
+      <label for="code" class="form-label">Code</label>
+      <input
+        id="code"
+        name="code"
+        type="text"
+        class="form-control"
+        formControlName="code"
+        [ngClass]="setInvalidClass('code')"
+      />
+      <app-invalid-field
+        [message]="'The field Code is required'"
+        [display]="isFieldValid('code')"
+      ></app-invalid-field>
+    </div>
+    <div class="mb-3">
+      <label for="level" class="form-label">Level</label>
+      <input
+        id="level"
+        name="level"
+        type="number"
+        class="form-control"
+        formControlName="level"
+        [ngClass]="setInvalidClass('level')"
+      />
+      <app-invalid-field
+        [message]="'The field Level is required'"
+        [display]="isFieldValid('level')"
+      ></app-invalid-field>
+    </div>
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input
+        id="name"
+        name="name"
+        type="text"
+        class="form-control"
+        formControlName="name"
+        [ngClass]="setInvalidClass('name')"
+      />
+      <app-invalid-field
+        [message]="'The field Name is required'"
+        [display]="isFieldValid('name')"
+      ></app-invalid-field>
+    </div>
+    <div class="mb-3">
+      <label for="color" class="form-label">Color</label>
+      <div class="d-flex">
+        <input
+          id="color"
+          name="color"
+          type="color"
+          class="form-control form-control-color"
+          formControlName="color"
+          [ngClass]="setInvalidClass('color')"
+        />
+        <input
+          id="colorTxt"
+          name="colorTxt"
+          type="text"
+          class="form-control"
+          formControlName="colorTxt"
+          [ngClass]="setInvalidClass('colorTxt')"
+        />
+      </div>
+      <app-invalid-field
+        [message]="'The fields Color are required'"
+        [display]="isFieldValid('color') || isFieldValid('colorTxt')"
+      ></app-invalid-field>
+    </div>
+    <div class="mb-3">
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </form>
+  <div class="col-lg-2"></div>
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-header"><h4>Rarity Codes</h4></div>
+      <ul class="list-group list-group-flush">
+        <li
+          class="list-group-item d-flex justify-content-between"
+          *ngFor="let rarityCode of rarityCodes"
+          [ngStyle]="setRarityStyle(rarityCode.color)"
+          [ngClass]="setEffervescentClass(rarityCode.color)"
+        >
+          <div class="fw-bold">
+            {{ rarityCode.name }}
+          </div>
+          <small>{{ rarityCode.code }}</small>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

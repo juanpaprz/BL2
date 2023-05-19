@@ -18,6 +18,7 @@ import { TablePaginationComponent } from './Components/Common/table-pagination/t
 import { TableComponent } from './Components/Common/table/table.component';
 import { ApiFirebaseService } from './Services/api-firebase.service';
 import { BodyControllerService } from './Services/Controllers/body-controller.service';
+import { RarityControllerService } from './Services/Controllers/rarity-controller.service';
 import { TypeControllerService } from './Services/Controllers/type-controller.service';
 import { DbFirebaseService } from './Services/db-firebase.service';
 import { ValidationService } from './Services/validation.service';
@@ -45,6 +46,7 @@ const appRoutes: Routes = [
     ValidationService,
     BodyControllerService,
     TypeControllerService,
+    RarityControllerService,
   ],
   declarations: [
     AppComponent,
