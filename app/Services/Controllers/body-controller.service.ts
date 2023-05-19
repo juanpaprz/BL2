@@ -56,6 +56,7 @@ export class BodyControllerService {
 
     return forkJoin(observables);
   }
+
   getAllBodies(): Observable<FrontBody[]> {
     return forkJoin([
       this.dbService.getTypeCodes(),

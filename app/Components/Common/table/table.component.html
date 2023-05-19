@@ -17,7 +17,7 @@
     <tr>
       <th
         *ngFor="let head of headers"
-        [ngClass]="hideId && head == 'Id' ? 'd-none' : ''"
+        [ngClass]="hideId && head.toLowerCase().includes('id') ? 'd-none' : ''"
       >
         {{ head }}
       </th>
