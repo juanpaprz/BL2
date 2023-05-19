@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { ApiBodyCodeComponent } from './Components/api-body-code/api-body-code.component';
 import { ApiBodyComponent } from './Components/api-body/api-body.component';
 import { ApiManagementComponent } from './Components/api-management/api-management.component';
+import { ApiRarityCodeComponent } from './Components/api-rarity-code/api-rarity-code.component';
 import { ApiTypeCodeComponent } from './Components/api-type-code/api-type-code.component';
 import { ApiTypeComponent } from './Components/api-type/api-type.component';
 import { InvalidFieldComponent } from './Components/Common/invalid-field/invalid-field.component';
@@ -27,6 +28,7 @@ const appRoutes: Routes = [
   { path: 'api/type', component: ApiTypeComponent },
   { path: 'api/bodycode', component: ApiBodyCodeComponent },
   { path: 'api/body', component: ApiBodyComponent },
+  { path: 'api/rarityCode', component: ApiRarityCodeComponent },
 ];
 
 @NgModule({
@@ -56,6 +58,7 @@ const appRoutes: Routes = [
     TableDisplaySelectComponent,
     TableFilterComponent,
     TablePaginationComponent,
+    ApiRarityCodeComponent,
   ],
   bootstrap: [AppComponent],
 })
