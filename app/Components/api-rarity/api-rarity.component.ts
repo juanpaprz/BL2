@@ -34,7 +34,7 @@ export class ApiRarityComponent implements OnInit {
   ngOnInit() {
     this.form = new FormGroup({
       rarityId: new FormControl('', Validators.required),
-      bodies: new FormArray([], AtLeastOneCheckbox()),
+      bodies: new FormArray([]),
     });
 
     this.getRarityCodes();
@@ -74,7 +74,7 @@ export class ApiRarityComponent implements OnInit {
             frontB.types.forEach((type) => {
               typesArray.push(
                 new FormGroup({
-                  value: new FormControl(false),
+                  value: new FormControl({value: false, disabled: true}),
                   typeId: new FormControl(type.id),
                 })
               );
