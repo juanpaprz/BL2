@@ -41,6 +41,19 @@ export class ApiRarityComponent implements OnInit {
     this.getFrontBodies();
   }
 
+  onSelectBody() {
+    Object.values(this.bodies.controls).forEach((b) => {
+      let bodyForms = b as FormGroup;
+      bodyForms.valueChanges.subscribe((val) => {
+        let typeArray = bodyForms.get('types') as FormArray;
+        Object.values(typeArray.controls).forEach((t) => {
+          let typeForm = t as FormGroup;
+          console.log(typeForm.controls['value']);
+        });
+      });
+    });
+  }
+
   getRarityCodes() {
     this.rarityService.getAllRarityCodes().subscribe({
       next: (response) => {
@@ -65,11 +78,9 @@ export class ApiRarityComponent implements OnInit {
             let formBody = new FormGroup({
               value: new FormControl(false),
               bodyId: new FormControl(frontB.id),
-              types: new FormArray([], AtLeastOneCheckbox()),
+              types: new FormArray([]),
             });
             this.bodies.push(formBody);
-
-            $('collapse' + frontB.code);
 
             let typesArray = formBody.get('types') as FormArray;
 
@@ -82,6 +93,7 @@ export class ApiRarityComponent implements OnInit {
               );
             });
           });
+          this.onSelectBody();
         }
       },
     });
