@@ -43,12 +43,16 @@ export class ApiRarityComponent implements OnInit {
 
   onSelectBody() {
     Object.values(this.bodies.controls).forEach((b) => {
-      let bodyForms = b as FormGroup;
-      bodyForms.valueChanges.subscribe((val) => {
-        let typeArray = bodyForms.get('types') as FormArray;
+      let formBody = b as FormGroup;
+      formBody.valueChanges.subscribe((val) => {
+        let typeArray = formBody.controls['types'] as FormArray;
         Object.values(typeArray.controls).forEach((t) => {
           let typeForm = t as FormGroup;
-          console.log(typeForm.controls['value']);
+          console.log(typeForm);
+          typeForm.controls['value'].patchValue(
+            { value: false, disabled: false },
+            { emitEvent: false }
+          );
         });
       });
     });
@@ -85,12 +89,12 @@ export class ApiRarityComponent implements OnInit {
             let typesArray = formBody.get('types') as FormArray;
 
             frontB.types.forEach((type) => {
-              typesArray.push(
-                new FormGroup({
-                  value: new FormControl({ value: false, disabled: true }),
-                  typeId: new FormControl(type.id),
-                })
-              );
+              let formType = new FormGroup({
+                value: new FormControl({ value: false, disabled: true }),
+                typeId: new FormControl(type.id),
+              });
+
+              typesArray.push(formType);
             });
           });
           this.onSelectBody();
