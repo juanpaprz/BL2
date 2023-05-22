@@ -44,7 +44,7 @@
               frontBody.name
             }}</label>
           </div>
-          <div class="container mt-2" formArrayName="types">
+          <div class="container mt-2" formArrayName="types" [id]="'collapse' + frontBody.code">
             <small class="card-tittle">Types</small>
             <ul class="list-group list-group-flush">
               <li

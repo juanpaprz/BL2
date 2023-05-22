@@ -69,18 +69,19 @@ export class ApiRarityComponent implements OnInit {
             });
             this.bodies.push(formBody);
 
+            $('collapse' + frontB.code);
+
             let typesArray = formBody.get('types') as FormArray;
 
             frontB.types.forEach((type) => {
               typesArray.push(
                 new FormGroup({
-                  value: new FormControl({value: false, disabled: true}),
+                  value: new FormControl({ value: false, disabled: true }),
                   typeId: new FormControl(type.id),
                 })
               );
             });
           });
-          console.log(this.form);
         }
       },
     });
