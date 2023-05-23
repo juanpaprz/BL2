@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   AtLeastOneCheckbox,
@@ -10,6 +10,7 @@ import { BodyControllerService } from '../../Services/Controllers/body-controlle
 import { FrontBody } from '../../Entities/FrontEntities/FrontBody';
 import { FrontRarity } from '../../Entities/FrontEntities/FrontRarity';
 import { Type } from '../../Entities/Type';
+import { tap } from 'rxjs';
 
 declare var $: any;
 
@@ -62,13 +63,12 @@ export class ApiRarityComponent implements OnInit {
     this.getRarityCodes();
     this.getFrontBodies();
     this.getFrontRarities();
-
-    console.log($(document))
   }
 
   onSelectBody(id: number) {
     let selectedBody = this.bodies.controls[id] as FormGroup;
     let typeFormArray = selectedBody.controls['types'] as FormArray;
+
     if (!selectedBody.value.value)
       typeFormArray.addValidators(AtLeastOneCheckbox());
     else {
