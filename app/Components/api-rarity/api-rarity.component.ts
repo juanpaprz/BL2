@@ -64,17 +64,19 @@ export class ApiRarityComponent implements OnInit {
     this.getRarityCodes();
     this.getFrontBodies();
     this.getFrontRarities();
-
-    this.hideTypes();
   }
 
   onSelectBody(id: number) {
     let selectedBody = this.bodies.controls[id] as FormGroup;
     let typeFormArray = selectedBody.controls['types'] as FormArray;
 
-    if (!selectedBody.value.value)
+    let bodyCode = this.frontBodies[id].code;
+
+    if (!selectedBody.value.value) {
+      $('#collapse' + bodyCode).show('slow');
       typeFormArray.addValidators(AtLeastOneCheckbox());
-    else {
+    } else {
+      $('#collapse' + bodyCode).hide('slow');
       typeFormArray.clearValidators();
       typeFormArray.updateValueAndValidity();
     }
@@ -151,6 +153,7 @@ export class ApiRarityComponent implements OnInit {
               typesArray.push(formType);
             });
           });
+          this.hideTypes();
         }
       },
     });
@@ -260,6 +263,7 @@ export class ApiRarityComponent implements OnInit {
           });
           this.bodies.clear();
           this.validateService.toucheFields(this.form, false);
+          this.hideTypes();
           this.getFrontBodies();
           this.getFrontRarities();
           this.disableButton = false;
