@@ -1,0 +1,23 @@
+<h2>Weapon Barrels</h2>
+<hr />
+
+<div class="row">
+  <form class="col-lg-6">
+    <div class="mb-3">
+      <label for="barrelId" class="form-label">Barrel</label>
+      <div class="input-group">
+        <input type="text" name="barrelId" id="barrelId" class="form-control" />
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          (click)="changeTableVisibility()"
+        >
+          ⌄
+        </button>
+      </div>
+      <div class="mt-2" id="collapseBarrel">
+        <app-table [headers]="codeHeaders" [values]="codeValues"></app-table>
+      </div>
+    </div>
+  </form>
+</div>
