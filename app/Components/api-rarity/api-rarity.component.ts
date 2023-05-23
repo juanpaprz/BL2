@@ -10,7 +10,7 @@ import { BodyControllerService } from '../../Services/Controllers/body-controlle
 import { FrontBody } from '../../Entities/FrontEntities/FrontBody';
 import { FrontRarity } from '../../Entities/FrontEntities/FrontRarity';
 import { Type } from '../../Entities/Type';
-import { tap } from 'rxjs';
+import { JqueryService } from '../../Services/jquery.service';
 
 declare var $: any;
 
@@ -46,7 +46,8 @@ export class ApiRarityComponent implements OnInit {
   constructor(
     private rarityService: RarityControllerService,
     private validateService: ValidationService,
-    private bodyService: BodyControllerService
+    private bodyService: BodyControllerService,
+    private jqueryService: JqueryService
   ) {}
 
   get bodies() {
@@ -63,6 +64,8 @@ export class ApiRarityComponent implements OnInit {
     this.getRarityCodes();
     this.getFrontBodies();
     this.getFrontRarities();
+
+    this.hideTypes();
   }
 
   onSelectBody(id: number) {
@@ -182,6 +185,15 @@ export class ApiRarityComponent implements OnInit {
           ]);
         });
       },
+    });
+  }
+
+  hideTypes() {
+    this.frontBodies.forEach((fb) => {
+      let selector = '#collapse' + fb.code;
+      this.jqueryService.waitForElm(selector).then((elm) => {
+        $(selector).hide();
+      });
     });
   }
 
