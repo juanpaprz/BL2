@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { ApiBarrelCodeComponent } from './Components/api-barrel-code/api-barrel-code.component';
+import { ApiBarrelComponent } from './Components/api-barrel/api-barrel.component';
 import { ApiBodyCodeComponent } from './Components/api-body-code/api-body-code.component';
 import { ApiBodyComponent } from './Components/api-body/api-body.component';
 import { ApiManagementComponent } from './Components/api-management/api-management.component';
@@ -36,6 +37,8 @@ const appRoutes: Routes = [
   { path: 'api/body', component: ApiBodyComponent },
   { path: 'api/rarityCode', component: ApiRarityCodeComponent },
   { path: 'api/rarity', component: ApiRarityComponent },
+  { path: 'api/barrelCode', component: ApiBarrelCodeComponent },
+  { path: 'api/barrel', component: ApiBarrelComponent },
 ];
 
 @NgModule({
@@ -72,6 +75,7 @@ const appRoutes: Routes = [
     ApiRarityCodeComponent,
     ApiRarityComponent,
     ApiBarrelCodeComponent,
+    ApiBarrelComponent,
   ],
   bootstrap: [AppComponent],
 })

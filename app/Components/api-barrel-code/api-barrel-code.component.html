@@ -1,0 +1,67 @@
+<h2>Barrel Codes</h2>
+<hr />
+
+<div class="row">
+  <form class="col-lg-6" [formGroup]="form" (ngSubmit)="addBarrelCode()">
+    <div class="mb-3">
+      <label for="code" class="form-label">Code</label>
+      <input
+        type="text"
+        id="code"
+        name="code"
+        class="form-control"
+        formControlName="code"
+        [ngClass]="setInvalidClass('code')"
+      />
+      <app-invalid-field
+        [message]="'The field Code is required'"
+        [display]="isFieldValid('code')"
+      ></app-invalid-field>
+    </div>
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        class="form-control"
+        formControlName="name"
+        [ngClass]="setInvalidClass('name')"
+      />
+      <app-invalid-field
+        [message]="'The field Name is required'"
+        [display]="isFieldValid('name')"
+      ></app-invalid-field>
+    </div>
+    <div class="mb-3 d-flex justify-content-between">
+      <button type="submit" class="btn btn-primary" [disabled]="disableButton">
+        Submit
+      </button>
+      <!--button
+        type="button"
+        class="btn btn-warning"
+        [disabled]="disableButton"
+        (click)="submitAll()"
+      >
+        Submit all
+      </button-->
+    </div>
+  </form>
+  <div class="col-lg-2"></div>
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-header"><h4>Barrel Codes</h4></div>
+      <ul class="list-group list-group-flush">
+        <li
+          class="list-group-item d-flex justify-content-between"
+          *ngFor="let barrelCode of barrelCodes"
+        >
+          <div class="fw-bold">
+            {{ barrelCode.name }}
+          </div>
+          <small>{{ barrelCode.code }}</small>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

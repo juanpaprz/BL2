@@ -41,3 +41,9 @@ export function AtLeastOneCheckbox(): ValidatorFn {
     return valid ? null : { NotOneChecked: true };
   };
 }
+
+export function NotRepeatedCode(codes: string[]): ValidatorFn {
+  return (formControl: AbstractControl): { [key: string]: any } | null => {
+    return !codes.includes(formControl.value) ? null : { RepeatedCode: true };
+  };
+}
