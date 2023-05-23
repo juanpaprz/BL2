@@ -22,6 +22,7 @@ import { BodyControllerService } from './Services/Controllers/body-controller.se
 import { RarityControllerService } from './Services/Controllers/rarity-controller.service';
 import { TypeControllerService } from './Services/Controllers/type-controller.service';
 import { DbFirebaseService } from './Services/db-firebase.service';
+import { StyleService } from './Services/style.service';
 import { ValidationService } from './Services/validation.service';
 
 const appRoutes: Routes = [
@@ -49,6 +50,7 @@ const appRoutes: Routes = [
     BodyControllerService,
     TypeControllerService,
     RarityControllerService,
+    StyleService,
   ],
   declarations: [
     AppComponent,

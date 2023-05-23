@@ -2,7 +2,7 @@
 <hr />
 
 <div class="row">
-  <form [formGroup]="form" class="col-lg-6">
+  <form [formGroup]="form" class="col-lg-6" (ngSubmit)="addRarity()">
     <div class="mb-3">
       <label for="rarityId" class="form-label">Rarity</label>
       <select
@@ -22,9 +22,21 @@
         [display]="isFieldValid('rarityId')"
       ></app-invalid-field>
     </div>
-    <div class="mb-3" formArrayName="bodies">
-      <label class="form-label">Bodies</label>
-      <ul class="list-group">
+    <div class="mb-3">
+      <div class="d-flex justify-content-between">
+        <label class="form-label">Bodies</label>
+        <div class="form-check">
+          <input
+            id="all"
+            type="checkbox"
+            class="form-check-input"
+            (click)="selectAll()"
+            formControlName="all"
+          />
+          <label for="all" class="form-check-label">Select all</label>
+        </div>
+      </div>
+      <ul class="list-group" formArrayName="bodies">
         <li
           class="list-group-item"
           *ngFor="let frontBody of frontBodies; index as i"
@@ -39,12 +51,17 @@
               role="switch"
               formControlName="value"
               [ngClass]="setInvalidClass('bodies')"
+              (click)="onSelectBody(i)"
             />
             <label [for]="frontBody.code" class="form-check-label">{{
               frontBody.name
             }}</label>
           </div>
-          <div class="container mt-2" formArrayName="types" [id]="'collapse' + frontBody.code">
+          <div
+            class="container mt-2"
+            formArrayName="types"
+            [id]="'collapse' + frontBody.code"
+          >
             <small class="card-tittle">Types</small>
             <ul class="list-group list-group-flush">
               <li
@@ -79,5 +96,12 @@
         [display]="isFieldValid('bodies')"
       ></app-invalid-field>
     </div>
+    <div class="mb-3">
+      <button type="submit" [disabled]="disableButton" class="btn btn-primary">Submit</button>
+    </div>
   </form>
+  <div class="col-lg-1"></div>
+  <div class="col-lg-5">
+    <app-table [headers]="headers" [values]="values"></app-table>
+  </div>
 </div>

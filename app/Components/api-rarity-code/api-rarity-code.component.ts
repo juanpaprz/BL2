@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RarityControllerService } from '../../Services/Controllers/rarity-controller.service';
 import { RarityCode } from '../../Entities/RarityCode';
 import { ValidationService } from '../../Services/validation.service';
+import { StyleService } from '../../Services/style.service';
 
 @Component({
   selector: 'app-api-rarity-code',
@@ -12,7 +13,8 @@ import { ValidationService } from '../../Services/validation.service';
 export class ApiRarityCodeComponent implements OnInit {
   constructor(
     private validateService: ValidationService,
-    private rarityService: RarityControllerService
+    private rarityService: RarityControllerService,
+    private styleService: StyleService
   ) {}
 
   form: FormGroup = new FormGroup({});
@@ -63,25 +65,12 @@ export class ApiRarityCodeComponent implements OnInit {
     return this.validateService.setInvalidClass(this.form, field);
   }
 
-  hexToRgb(hex: string) {
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result
-      ? {
-          r: parseInt(result[1], 16),
-          g: parseInt(result[2], 16),
-          b: parseInt(result[3], 16),
-        }
-      : null;
-  }
-
   setRarityStyle(color: string) {
-    let rgb = this.hexToRgb(color);
-    if (rgb)
-      return { 'background-color': `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.3)` };
+    return this.styleService.setRarityStyle(color);
   }
 
   setEffervescentClass(color: string) {
-    if (color == 'Effervescent') return 'wrapper';
+    return this.styleService.setEffervescentClass(color);
   }
 
   addRarityCode() {

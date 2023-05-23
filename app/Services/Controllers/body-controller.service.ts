@@ -23,7 +23,7 @@ export class BodyControllerService {
     return this.dbService.addBodyCode(bodyCode);
   }
 
-  addBody(frontBody: FrontBody) {
+  addBody(frontBody: FrontBody): Observable<Body[]> {
     let bodies: Body[] = [];
 
     let sendBody: Body = {

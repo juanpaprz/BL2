@@ -38,6 +38,6 @@ export function AtLeastOneCheckbox(): ValidatorFn {
     array?.controls.forEach((field) => {
       if (field.get('value')?.value) valid = true;
     });
-    return valid ? null : { error: true };
+    return valid ? null : { NotOneChecked: true };
   };
 }

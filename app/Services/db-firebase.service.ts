@@ -6,6 +6,7 @@ import { Type } from '../Entities/Type';
 import { BodyCode } from '../Entities/BodyCode';
 import { Body } from '../Entities/Body';
 import { RarityCode } from '../Entities/RarityCode';
+import { Rarity } from '../Entities/Rarity';
 
 const DBURL = 'https://bl2-weapons-default-rtdb.firebaseio.com/';
 
@@ -62,5 +63,16 @@ export class DbFirebaseService {
       `${DBURL}RarityCode/${rarityCode.id}.json`,
       rarityCode
     );
+  }
+
+  addRarity(rarity: Rarity): Observable<Rarity> {
+    return this.httpClient.put<Rarity>(
+      `${DBURL}Rarity/${rarity.id}.json`,
+      rarity
+    );
+  }
+
+  getRarities(): Observable<Rarity[]> {
+    return this.httpClient.get<Rarity[]>(DBURL + 'Rarity.json');
   }
 }

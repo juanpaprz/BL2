@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, OnChanges } from '@angular/core';
+import { StyleService } from '../../../Services/style.service';
 
 @Component({
   selector: 'app-table',
@@ -17,7 +18,7 @@ export class TableComponent implements OnInit, OnChanges {
   filterValue: string = '';
   filteredData: string[][] = [];
 
-  constructor() {}
+  constructor(private styleService: StyleService) {}
 
   ngOnInit() {}
 
