@@ -11,6 +11,8 @@ import { FrontBody } from '../../Entities/FrontEntities/FrontBody';
 import { FrontRarity } from '../../Entities/FrontEntities/FrontRarity';
 import { Type } from '../../Entities/Type';
 
+declare var $: any;
+
 @Component({
   selector: 'app-api-rarity',
   templateUrl: './api-rarity.component.html',
@@ -60,6 +62,8 @@ export class ApiRarityComponent implements OnInit {
     this.getRarityCodes();
     this.getFrontBodies();
     this.getFrontRarities();
+
+    console.log($(document))
   }
 
   onSelectBody(id: number) {
