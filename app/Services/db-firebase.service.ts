@@ -9,6 +9,11 @@ import { RarityCode } from '../Entities/RarityCode';
 import { Rarity } from '../Entities/Rarity';
 import { BarrelCode } from '../Entities/BarrelCode';
 import { Barrel } from '../Entities/Barrel';
+import { GripCode } from '../Entities/GripCode';
+import { StockCode } from '../Entities/StockCode';
+import { SightCode } from '../Entities/SightCode';
+import { ElementCode } from '../Entities/ElementCode';
+import { AccesoryCode } from '../Entities/AccesoryCode';
 
 const DBURL = 'https://bl2-weapons-default-rtdb.firebaseio.com/';
 
@@ -94,5 +99,64 @@ export class DbFirebaseService {
       `${DBURL}Barrel/${barrel.id}.json`,
       barrel
     );
+  }
+
+  getBarrels(): Observable<Barrel[]> {
+    return this.httpClient.get<Barrel[]>(DBURL + 'Barrel.json');
+  }
+
+  addGripCode(gripCode: GripCode): Observable<GripCode> {
+    return this.httpClient.put<GripCode>(
+      `${DBURL}GripCode/${gripCode.id}.json`,
+      gripCode
+    );
+  }
+
+  getGripCodes(): Observable<GripCode[]> {
+    return this.httpClient.get<GripCode[]>(DBURL + 'GripCode.json');
+  }
+
+  addStockCode(stockCode: StockCode): Observable<StockCode> {
+    return this.httpClient.put<StockCode>(
+      `${DBURL}StockCode/${stockCode.id}.json`,
+      stockCode
+    );
+  }
+
+  getStockCodes(): Observable<StockCode[]> {
+    return this.httpClient.get<StockCode[]>(DBURL + 'StockCode.json');
+  }
+
+  addSightCode(sightCode: SightCode): Observable<SightCode> {
+    return this.httpClient.put<SightCode>(
+      `${DBURL}SightCode/${sightCode.id}.json`,
+      sightCode
+    );
+  }
+
+  getSightCodes(): Observable<SightCode[]> {
+    return this.httpClient.get<SightCode[]>(DBURL + 'SightCode.json');
+  }
+
+  addElementCode(elementCode: ElementCode): Observable<ElementCode> {
+    return this.httpClient.put<ElementCode>(
+      `${DBURL}ElementCode/${elementCode.id}.json`,
+      elementCode
+    );
+  }
+
+  getElementCodes(): Observable<ElementCode[]> {
+    return this.httpClient.get<ElementCode[]>(DBURL + 'ElementCode.json');
+  }
+
+  addAccesoryCode(accesoryCode: AccesoryCode): Observable<AccesoryCode> {
+    return this.httpClient.put<AccesoryCode>(
+      `${DBURL}AccesoryCode/${accesoryCode.id}.json`,
+      accesoryCode
+    );
+  }
+
+  getAccesoryCodes(): Observable<AccesoryCode[]> {
+    return this.httpClient.get<AccesoryCode[]>(DBURL + 'AccesoryCode.json');
   }
 }

@@ -32,9 +32,13 @@ export class ApiBarrelComponent implements OnInit {
 
   barrelCodes: BarrelCode[] = [];
   rarityCodes: FrontRarity[] = [];
+  barrels: FrontBarrel[] = [];
 
   codeHeaders: string[] = [];
   codeValues: string[][] = [];
+
+  barrelHeaders: string[] = [];
+  barrelValues: string[][] = [];
 
   disableButton: Boolean = false;
 
@@ -56,6 +60,7 @@ export class ApiBarrelComponent implements OnInit {
 
     this.getBarrelCodes();
     this.getFrontRarities();
+    this.getBarrels();
   }
 
   get raritiesForm() {
@@ -82,6 +87,8 @@ export class ApiBarrelComponent implements OnInit {
   }
 
   getFrontRarities() {
+    this.disableButton = true;
+    this.rarityCodes = [];
     this.rarityService.getAllRarityCodesExtended().subscribe({
       next: (response) => {
         if (response)
@@ -90,6 +97,8 @@ export class ApiBarrelComponent implements OnInit {
         if (!this.rarityCodes.length) return;
 
         this.rarityCodes.forEach((rarityCode) => {
+          rarityCode.bodies.sort((a, b) => (a.name > b.name ? 1 : -1));
+
           let rarityGroup = new FormGroup({
             value: new FormControl(false),
             rarityId: new FormControl(rarityCode.id),
@@ -101,6 +110,8 @@ export class ApiBarrelComponent implements OnInit {
           let bodyArray = rarityGroup.get('bodies') as FormArray;
 
           rarityCode.bodies.forEach((bodyCode) => {
+            bodyCode.types.sort((a, b) => (a.name > b.name ? 1 : -1));
+
             let bodyGroup = new FormGroup({
               value: new FormControl(false),
               bodyId: new FormControl(bodyCode.id),
@@ -121,7 +132,43 @@ export class ApiBarrelComponent implements OnInit {
             });
           });
         });
+        this.disableButton = false;
         this.hideCollapse();
+      },
+    });
+  }
+
+  getBarrels() {
+    this.barrelService.getAllBarrels().subscribe({
+      next: (response) => {
+        if (response)
+          this.barrels = Object.values(response).sort(
+            (a, b) =>
+              a.name.localeCompare(b.name) ||
+              a.rarities[0].level - b.rarities[0].level ||
+              a.rarities[0].bodies[0].types[0].name.localeCompare(
+                b.rarities[0].bodies[0].types[0].name
+              ) ||
+              a.rarities[0].bodies[0].name.localeCompare(
+                b.rarities[0].bodies[0].name
+              )
+          );
+
+        if (!this.barrels.length) return;
+
+        this.barrelHeaders = ['code', 'name', 'type', 'body', 'rarity'];
+
+        this.barrelValues = [];
+
+        this.barrels.forEach((b) => {
+          this.barrelValues.push([
+            b.code,
+            b.name,
+            b.rarities[0].bodies[0].types[0].name,
+            b.rarities[0].bodies[0].name,
+            b.rarities[0].name,
+          ]);
+        });
       },
     });
   }
@@ -137,12 +184,13 @@ export class ApiBarrelComponent implements OnInit {
       barrel: barrel[1],
       barrelId: barrelId,
     });
+
+    this.changeTableVisibility();
   }
 
   hideCollapse() {
     this.rarityCodes.forEach((rarityCode) => {
       let selector: string = '';
-
       rarityCode.bodies.forEach((bodyCode) => {
         selector = '#collapse' + rarityCode.code + bodyCode.code;
         this.hideTypes(selector);
@@ -389,6 +437,7 @@ export class ApiBarrelComponent implements OnInit {
           this.raritiesForm.clear();
           this.toucheAllFields(false);
           this.getFrontRarities();
+          this.getBarrels();
           this.disableButton = false;
         },
       });

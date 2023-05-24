@@ -1,8 +1,15 @@
 import { Injectable } from '@angular/core';
+import { AccesoryCode, AccesoryCodes } from '../Entities/AccesoryCode';
+import { ElementCode, ElementCodes } from '../Entities/ElementCode';
+import { GripCode, GripCodes } from '../Entities/GripCode';
+import { SightCode, SightCodes } from '../Entities/SightCode';
+import { StockCode, StockCodes } from '../Entities/StockCode';
+import { DbFirebaseService } from '../Services/db-firebase.service';
+import { forkJoin, Observable } from 'rxjs';
 
 @Injectable()
 export class ApiFirebaseService {
-  constructor() {}
+  constructor(private dbService: DbFirebaseService) {}
 
   generateId() {
     const CHARS =
@@ -28,6 +35,61 @@ export class ApiFirebaseService {
     ].join('');
 
     return id;
+  }
+
+  addGripCodes() {
+    let observables: Observable<GripCode>[] = [];
+
+    GripCodes.forEach((grip) => {
+      grip.id = this.generateId();
+      observables.push(this.dbService.addGripCode(grip));
+    });
+
+    return forkJoin(observables);
+  }
+
+  addStockCodes() {
+    let observables: Observable<StockCode>[] = [];
+
+    StockCodes.forEach((stock) => {
+      stock.id = this.generateId();
+      observables.push(this.dbService.addStockCode(stock));
+    });
+
+    return forkJoin(observables);
+  }
+
+  addSightCodes() {
+    let observables: Observable<SightCode>[] = [];
+
+    SightCodes.forEach((sight) => {
+      sight.id = this.generateId();
+      observables.push(this.dbService.addSightCode(sight));
+    });
+
+    return forkJoin(observables);
+  }
+
+  addElementCodes() {
+    let observables: Observable<ElementCode>[] = [];
+
+    ElementCodes.forEach((element) => {
+      element.id = this.generateId();
+      observables.push(this.dbService.addElementCode(element));
+    });
+
+    return forkJoin(observables);
+  }
+
+  addAccesoryCodes() {
+    let observables: Observable<AccesoryCode>[] = [];
+
+    AccesoryCodes.forEach((accesory) => {
+      accesory.id = this.generateId();
+      observables.push(this.dbService.addAccesoryCode(accesory));
+    });
+
+    return forkJoin(observables);
   }
 
   /*addAllBarrelsTemp() {

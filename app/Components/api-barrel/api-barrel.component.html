@@ -1,6 +1,5 @@
 <h2>Weapon Barrels</h2>
 <hr />
-
 <div class="row">
   <form [formGroup]="form" class="col-lg-6" (ngSubmit)="addBarrel()">
     <div class="mb-3">
@@ -147,4 +146,8 @@
       </button>
     </div>
   </form>
+  <div class="col-lg-1"></div>
+  <div class="col-lg-5">
+    <app-table [headers]="barrelHeaders" [values]="barrelValues"></app-table>
+  </div>
 </div>
