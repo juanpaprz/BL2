@@ -68,14 +68,14 @@
                 class="list-group-item"
                 *ngFor="let type of frontBody.types; index as j"
                 [formGroupName]="j"
-                [ngClass]="setInvalidClass('types')"
+                [ngClass]="setInvalidClass('types', i)"
               >
                 <input
                   [id]="frontBody.code + '-' + type.code"
                   type="checkbox"
                   class="form-check-input me-1"
                   formControlName="value"
-                  [ngClass]="setInvalidClass('types')"
+                  [ngClass]="setInvalidClass('types', i)"
                 />
                 <label
                   [for]="frontBody.code + '-' + type.code"
@@ -86,7 +86,7 @@
             </ul>
             <app-invalid-field
               [message]="'Check at least one Type'"
-              [display]="isFieldValid('types')"
+              [display]="isFieldValid('types', i)"
             ></app-invalid-field>
           </div>
         </li>

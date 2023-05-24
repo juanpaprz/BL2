@@ -2,7 +2,7 @@
 <hr />
 
 <div class="row">
-  <form [formGroup]="form" class="col-lg-6">
+  <form [formGroup]="form" class="col-lg-6" (ngSubmit)="addBarrel()">
     <div class="mb-3">
       <label for="barrelId" class="form-label">Barrel</label>
       <div class="input-group">
@@ -67,15 +67,18 @@
             <small class="card-tittle">Body</small>
             <ul class="list-group list-group-flush">
               <li
-                class="list-group-item"
+                class="list-group-item border-danger"
                 *ngFor="let bodyCode of rarityCode.bodies; index as j"
                 [formGroupName]="j"
+                [ngClass]="setInvalidClass('bodies', i)"
               >
                 <input
                   [id]="rarityCode.code + '-' + bodyCode.code"
                   type="checkbox"
                   class="form-check-input me-1"
                   formControlName="value"
+                  (click)="onSelectBody(i, j)"
+                  [ngClass]="setInvalidClass('bodies', i)"
                 />
                 <label
                   [for]="rarityCode.code + '-' + bodyCode.code"
@@ -84,7 +87,7 @@
                 >
                 <div
                   [id]="'collapse' + rarityCode.code + bodyCode.code"
-                  class="btn-group ms-4"
+                  class="btn-group ms-4 border-danger"
                   role="group"
                   formArrayName="types"
                 >
@@ -105,7 +108,7 @@
                       formControlName="value"
                     />
                     <label
-                      class="btn btn-outline-secondary btn-sm"
+                      class="btn btn-sm"
                       [for]="
                         rarityCode.code +
                         '-' +
@@ -113,12 +116,23 @@
                         '-' +
                         typeCode.code
                       "
+                      [ngClass]="setTypeButtonsClass('types', i, j, k)"
                       >{{ typeCode.name }}</label
                     >
                   </div>
                 </div>
+                <div class="col-12">
+                  <app-invalid-field
+                    [message]="'Check at least one Type'"
+                    [display]="isFieldValid('types', i, j)"
+                  ></app-invalid-field>
+                </div>
               </li>
             </ul>
+            <app-invalid-field
+              [message]="'Check at least one Body'"
+              [display]="isFieldValid('bodies', i)"
+            ></app-invalid-field>
           </div>
         </li>
       </ul>
@@ -126,6 +140,11 @@
         [message]="'Check at least one Rarity'"
         [display]="isFieldValid('rarities')"
       ></app-invalid-field>
+    </div>
+    <div class="mb-3">
+      <button type="submit" class="btn btn-primary" [disabled]="disableButton">
+        Submit
+      </button>
     </div>
   </form>
 </div>

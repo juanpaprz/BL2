@@ -200,12 +200,35 @@ export class ApiRarityComponent implements OnInit {
     });
   }
 
-  isFieldValid(field: string): boolean {
+  isFieldValid(field: string, formRarity: number = 0): boolean {
+    if (field == 'types') {
+      let bodyFormGroup = this.bodies.controls[formRarity] as FormGroup;
+      return bodyFormGroup
+        ? this.validateService.isFieldValid(bodyFormGroup, field)
+        : true;
+    }
+
     return this.validateService.isFieldValid(this.form, field);
   }
 
-  setInvalidClass(field: string) {
+  setInvalidClass(field: string, formRarity: number = 0) {
+    if (field == 'types') {
+      let bodyFormGroup = this.bodies.controls[formRarity] as FormGroup;
+      return bodyFormGroup
+        ? this.validateService.setInvalidClass(bodyFormGroup, field)
+        : '';
+    }
+
     return this.validateService.setInvalidClass(this.form, field);
+  }
+
+  toucheAllFields(touche: boolean) {
+    this.validateService.toucheFields(this.form, touche);
+
+    Object.values(this.bodies.controls).forEach((typeForm) => {
+      let typeFormGroup = typeForm as FormGroup;
+      this.validateService.toucheFields(typeFormGroup, touche);
+    });
   }
 
   addRarity() {
@@ -262,7 +285,7 @@ export class ApiRarityComponent implements OnInit {
             all: false,
           });
           this.bodies.clear();
-          this.validateService.toucheFields(this.form, false);
+          this.toucheAllFields(false);
           this.hideTypes();
           this.getFrontBodies();
           this.getFrontRarities();
@@ -270,7 +293,7 @@ export class ApiRarityComponent implements OnInit {
         },
       });
     } else {
-      this.validateService.toucheFields(this.form, true);
+      this.toucheAllFields(true);
     }
   }
 }
