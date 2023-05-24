@@ -118,4 +118,69 @@ export class RarityControllerService {
       })
     );
   }
+
+  getAllRarityCodesExtended(): Observable<FrontRarity[]> {
+    return forkJoin([
+      this.dbService.getTypeCodes(),
+      this.dbService.getBodyCodes(),
+      this.dbService.getRarityCodes(),
+      this.dbService.getBodies(),
+      this.dbService.getRarities(),
+    ]).pipe(
+      map((response) => {
+        let frontRarities: FrontRarity[] = [];
+
+        if (
+          !response[0] ||
+          !response[1] ||
+          !response[2] ||
+          !response[3] ||
+          !response[4]
+        )
+          return frontRarities;
+
+        let typeCodes = Object.values(response[0]);
+        let bodyCodes = Object.values(response[1]);
+        let rarityCodes = Object.values(response[2]);
+        let bodies = Object.values(response[3]);
+        let rarities = Object.values(response[4]);
+
+        rarityCodes.forEach((rarityCode) => {
+          let rarityBodyCodes = bodyCodes.filter((bc) =>
+            rarities
+              .filter((r) => r.code == rarityCode.code)
+              .some((r) => r.bodyId == bc.id)
+          );
+
+          let frontBodies: FrontBody[] = [];
+
+          rarityBodyCodes.forEach((bodyCode) => {
+            let frontBody: FrontBody = {
+              id: bodyCode.id,
+              code: bodyCode.code,
+              name: bodyCode.name,
+              types: typeCodes.filter((t) =>
+                bodies
+                  .filter((b) => b.code == bodyCode.code)
+                  .some((b) => b.typeId == t.id)
+              ),
+            };
+            frontBodies.push(frontBody);
+          });
+
+          let frontRarity: FrontRarity = {
+            id: rarityCode.id,
+            code: rarityCode.code,
+            name: rarityCode.name,
+            level: rarityCode.level,
+            color: rarityCode.color,
+            colorTxt: rarityCode.colorTxt,
+            bodies: frontBodies,
+          };
+          frontRarities.push(frontRarity);
+        });
+        return frontRarities;
+      })
+    );
+  }
 }

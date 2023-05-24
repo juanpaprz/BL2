@@ -2,11 +2,19 @@
 <hr />
 
 <div class="row">
-  <form class="col-lg-6">
+  <form [formGroup]="form" class="col-lg-6">
     <div class="mb-3">
       <label for="barrelId" class="form-label">Barrel</label>
       <div class="input-group">
-        <input type="text" name="barrelId" id="barrelId" class="form-control" />
+        <input
+          type="text"
+          name="barrelId"
+          id="barrelId"
+          class="form-control"
+          readonly
+          formControlName="barrel"
+          [ngClass]="setInvalidClass('barrel')"
+        />
         <button
           class="btn btn-outline-secondary"
           type="button"
@@ -15,9 +23,109 @@
           ⌄
         </button>
       </div>
+      <app-invalid-field
+        [message]="'The field Barrel is required'"
+        [display]="isFieldValid('barrel')"
+      ></app-invalid-field>
       <div class="mt-2" id="collapseBarrel">
-        <app-table [headers]="codeHeaders" [values]="codeValues"></app-table>
+        <app-table
+          [headers]="codeHeaders"
+          [values]="codeValues"
+          [selectable]="true"
+          (selectItemEmitter)="selectBarrel($event)"
+        ></app-table>
       </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Rarity</label>
+      <ul class="list-group" formArrayName="rarities">
+        <li
+          class="list-group-item"
+          *ngFor="let rarityCode of rarityCodes; index as i"
+          [formGroupName]="i"
+          [ngClass]="setInvalidClass('rarities')"
+        >
+          <div class="form-check form-switch">
+            <input
+              [id]="rarityCode.code"
+              type="checkbox"
+              class="form-check-input"
+              role="switch"
+              formControlName="value"
+              [ngClass]="setInvalidClass('rarities')"
+              (click)="onSelectRarity(i)"
+            />
+            <label [for]="rarityCode.code" class="form-check-label">{{
+              rarityCode.name
+            }}</label>
+          </div>
+          <div
+            [id]="'collapse' + rarityCode.code"
+            class="containter mt-2"
+            formArrayName="bodies"
+          >
+            <small class="card-tittle">Body</small>
+            <ul class="list-group list-group-flush">
+              <li
+                class="list-group-item"
+                *ngFor="let bodyCode of rarityCode.bodies; index as j"
+                [formGroupName]="j"
+              >
+                <input
+                  [id]="rarityCode.code + '-' + bodyCode.code"
+                  type="checkbox"
+                  class="form-check-input me-1"
+                  formControlName="value"
+                />
+                <label
+                  [for]="rarityCode.code + '-' + bodyCode.code"
+                  class="form-check-label"
+                  >{{ bodyCode.name }}</label
+                >
+                <div
+                  [id]="'collapse' + rarityCode.code + bodyCode.code"
+                  class="btn-group ms-4"
+                  role="group"
+                  formArrayName="types"
+                >
+                  <div
+                    *ngFor="let typeCode of bodyCode.types; index as k"
+                    [formGroupName]="k"
+                  >
+                    <input
+                      type="checkbox"
+                      class="btn-check"
+                      [id]="
+                        rarityCode.code +
+                        '-' +
+                        bodyCode.code +
+                        '-' +
+                        typeCode.code
+                      "
+                      formControlName="value"
+                    />
+                    <label
+                      class="btn btn-outline-secondary btn-sm"
+                      [for]="
+                        rarityCode.code +
+                        '-' +
+                        bodyCode.code +
+                        '-' +
+                        typeCode.code
+                      "
+                      >{{ typeCode.name }}</label
+                    >
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+      <app-invalid-field
+        [message]="'Check at least one Rarity'"
+        [display]="isFieldValid('rarities')"
+      ></app-invalid-field>
     </div>
   </form>
 </div>

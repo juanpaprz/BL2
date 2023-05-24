@@ -1,0 +1,13 @@
+.selectable {
+  cursor: pointer;
+}
+
+.selectable:hover {
+  background-color: #8ecae6;
+  border-color: #219ebc;
+}
+
+.selected {
+  background-color: #8ecae6;
+  border-color: #219ebc;
+}

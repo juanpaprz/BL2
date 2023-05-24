@@ -24,7 +24,11 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let value of displayData">
+    <tr
+      *ngFor="let value of displayData"
+      [ngClass]="setSelectClasses(value[0])"
+      (click)="selectItem(value)"
+    >
       <td *ngFor="let data of value" [ngClass]="isId(data) ? 'd-none' : ''">
         {{ data }}
       </td>
