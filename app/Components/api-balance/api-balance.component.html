@@ -1,0 +1,216 @@
+<h2>Weapon balance</h2>
+<hr />
+
+<form class="row gy-4" [formGroup]="form" (ngSubmit)="addBalance()">
+  <div class="col-lg-6">
+    <div class="mb-3">
+      <label for="type" class="form-label">Type</label>
+      <select
+        name="type"
+        id="type"
+        class="form-select"
+        formControlName="type"
+        (change)="getBodyCodes()"
+        [ngClass]="setInvalidClass('type')"
+      >
+        <option value=""></option>
+        <option *ngFor="let typeCode of typeCodes" [value]="typeCode.id">
+          {{ typeCode.name }}
+        </option>
+      </select>
+      <app-invalid-field
+        [message]="'The field Body is required'"
+        [display]="isFieldValid('type')"
+      ></app-invalid-field>
+    </div>
+    <div class="mb-3">
+      <label for="body" class="form-label">Body</label>
+      <select
+        name="body"
+        id="body"
+        class="form-select"
+        formControlName="body"
+        (change)="getBarrels()"
+        [ngClass]="setInvalidClass('body')"
+      >
+        <option value=""></option>
+        <option *ngFor="let bodyCode of bodyCodes" [value]="bodyCode.id">
+          {{ bodyCode.name }}
+        </option>
+      </select>
+      <app-invalid-field
+        [message]="'The field Body is required'"
+        [display]="isFieldValid('body')"
+      ></app-invalid-field>
+    </div>
+    <div class="mb-3">
+      <label for="barrel" class="form-label">Barrel</label>
+      <select
+        name="barrel"
+        id="barrel"
+        class="form-select"
+        formControlName="barrel"
+        [ngClass]="setInvalidClass('barrel')"
+      >
+        <option value=""></option>
+        <option *ngFor="let barrel of barrels" [value]="barrel.id">
+          {{ barrel.name }}
+        </option>
+      </select>
+      <app-invalid-field
+        [message]="'The field Body is required'"
+        [display]="isFieldValid('barrel')"
+      ></app-invalid-field>
+    </div>
+  </div>
+  <div class="col-lg-12 row">
+    <div class="col">
+      <label class="form-label">Grip</label>
+      <ul class="list-group" formArrayName="grips">
+        <li
+          class="list-group-item"
+          *ngFor="let gripCode of gripCodes; index as i"
+          [formGroupName]="i"
+          [ngClass]="setInvalidClass('grips')"
+        >
+          <input
+            class="form-check-input"
+            type="checkbox"
+            [id]="gripCode.code"
+            [value]="gripCode.id"
+            formControlName="value"
+            [ngClass]="setInvalidClass('grips')"
+          />
+          <label
+            class="form-check-label stretched-link"
+            [for]="gripCode.code"
+            >{{ gripCode.name }}</label
+          >
+        </li>
+      </ul>
+      <app-invalid-field
+        [message]="'Check at least one Type'"
+        [display]="isFieldValid('grips')"
+      ></app-invalid-field>
+    </div>
+    <div class="col">
+      <label class="form-label">Stock</label>
+      <ul class="list-group" formArrayName="stocks">
+        <li
+          class="list-group-item"
+          *ngFor="let stockCode of stockCodes; index as i"
+          [formGroupName]="i"
+          [ngClass]="setInvalidClass('stocks')"
+        >
+          <input
+            class="form-check-input"
+            type="checkbox"
+            [id]="stockCode.code"
+            [value]="stockCode.id"
+            formControlName="value"
+            [ngClass]="setInvalidClass('stocks')"
+          />
+          <label
+            class="form-check-label stretched-link"
+            [for]="stockCode.code"
+            >{{ stockCode.name }}</label
+          >
+        </li>
+      </ul>
+      <app-invalid-field
+        [message]="'Check at least one Type'"
+        [display]="isFieldValid('stocks')"
+      ></app-invalid-field>
+    </div>
+    <div class="col">
+      <label class="form-label">Sight</label>
+      <ul class="list-group" formArrayName="sights">
+        <li
+          class="list-group-item"
+          *ngFor="let sightCode of sightCodes; index as i"
+          [formGroupName]="i"
+          [ngClass]="setInvalidClass('sights')"
+        >
+          <input
+            class="form-check-input"
+            type="checkbox"
+            [id]="sightCode.code"
+            [value]="sightCode.id"
+            formControlName="value"
+            [ngClass]="setInvalidClass('sights')"
+          />
+          <label
+            class="form-check-label stretched-link"
+            [for]="sightCode.code"
+            >{{ sightCode.name }}</label
+          >
+        </li>
+      </ul>
+      <app-invalid-field
+        [message]="'Check at least one Type'"
+        [display]="isFieldValid('sights')"
+      ></app-invalid-field>
+    </div>
+    <div class="col">
+      <label class="form-label">Element</label>
+      <ul class="list-group" formArrayName="elements">
+        <li
+          class="list-group-item"
+          *ngFor="let elementCode of elementCodes; index as i"
+          [formGroupName]="i"
+          [ngClass]="setInvalidClass('elements')"
+        >
+          <input
+            class="form-check-input"
+            type="checkbox"
+            [id]="elementCode.code"
+            [value]="elementCode.id"
+            formControlName="value"
+            [ngClass]="setInvalidClass('elements')"
+          />
+          <label
+            class="form-check-label stretched-link"
+            [for]="elementCode.code"
+            >{{ elementCode.name }}</label
+          >
+        </li>
+      </ul>
+      <app-invalid-field
+        [message]="'Check at least one Type'"
+        [display]="isFieldValid('elements')"
+      ></app-invalid-field>
+    </div>
+    <div class="col">
+      <label class="form-label">Accesory</label>
+      <ul class="list-group" formArrayName="accesories">
+        <li
+          class="list-group-item"
+          *ngFor="let accesoryCode of accesoryCodes; index as i"
+          [formGroupName]="i"
+          [ngClass]="setInvalidClass('accesories')"
+        >
+          <input
+            class="form-check-input"
+            type="checkbox"
+            [id]="accesoryCode.code"
+            [value]="accesoryCode.id"
+            formControlName="value"
+            [ngClass]="setInvalidClass('accesories')"
+          />
+          <label
+            class="form-check-label stretched-link"
+            [for]="accesoryCode.code"
+            >{{ accesoryCode.name }}</label
+          >
+        </li>
+      </ul>
+      <app-invalid-field
+        [message]="'Check at least one Type'"
+        [display]="isFieldValid('accesories')"
+      ></app-invalid-field>
+    </div>
+  </div>
+  <div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+</form>

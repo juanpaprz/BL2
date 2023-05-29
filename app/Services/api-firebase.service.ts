@@ -48,6 +48,10 @@ export class ApiFirebaseService {
     return forkJoin(observables);
   }
 
+  getGripCodes(): Observable<GripCode[]> {
+    return this.dbService.getGripCodes();
+  }
+
   addStockCodes() {
     let observables: Observable<StockCode>[] = [];
 
@@ -57,6 +61,10 @@ export class ApiFirebaseService {
     });
 
     return forkJoin(observables);
+  }
+
+  getStockCodes(): Observable<StockCode[]> {
+    return this.dbService.getStockCodes();
   }
 
   addSightCodes() {
@@ -70,6 +78,10 @@ export class ApiFirebaseService {
     return forkJoin(observables);
   }
 
+  getSightCodes(): Observable<SightCode[]> {
+    return this.dbService.getSightCodes();
+  }
+
   addElementCodes() {
     let observables: Observable<ElementCode>[] = [];
 
@@ -81,6 +93,10 @@ export class ApiFirebaseService {
     return forkJoin(observables);
   }
 
+  getElementCodes(): Observable<ElementCode[]> {
+    return this.dbService.getElementCodes();
+  }
+
   addAccesoryCodes() {
     let observables: Observable<AccesoryCode>[] = [];
 
@@ -90,6 +106,10 @@ export class ApiFirebaseService {
     });
 
     return forkJoin(observables);
+  }
+
+  getAccesoryCodes(): Observable<AccesoryCode[]> {
+    return this.dbService.getAccesoryCodes();
   }
 
   /*addAllBarrelsTemp() {

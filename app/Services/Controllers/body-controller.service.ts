@@ -114,4 +114,27 @@ export class BodyControllerService {
       })
     );
   }
+
+  getBodyCodesOf(typeCodeId: string): Observable<BodyCode[]> {
+    return forkJoin([
+      this.dbService.getBodyCodes(),
+      this.dbService.getBodies(),
+    ]).pipe(
+      map((response) => {
+        let bodyCodes: BodyCode[] = [];
+
+        if (!response[0] || !response[1]) return bodyCodes;
+
+        let bodies = Object.values(response[1]);
+
+        bodyCodes = Object.values(response[0]).filter((bc) =>
+          bodies
+            .filter((b) => b.typeId == typeCodeId)
+            .some((b) => b.code == bc.code)
+        );
+
+        return bodyCodes;
+      })
+    );
+  }
 }

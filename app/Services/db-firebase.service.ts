@@ -14,6 +14,7 @@ import { StockCode } from '../Entities/StockCode';
 import { SightCode } from '../Entities/SightCode';
 import { ElementCode } from '../Entities/ElementCode';
 import { AccesoryCode } from '../Entities/AccesoryCode';
+import { Balance } from '../Entities/Balance';
 
 const DBURL = 'https://bl2-weapons-default-rtdb.firebaseio.com/';
 
@@ -158,5 +159,12 @@ export class DbFirebaseService {
 
   getAccesoryCodes(): Observable<AccesoryCode[]> {
     return this.httpClient.get<AccesoryCode[]>(DBURL + 'AccesoryCode.json');
+  }
+
+  addBalance(balance: Balance): Observable<Balance> {
+    return this.httpClient.put<Balance>(
+      `${DBURL}Balance/${balance.id}.json`,
+      balance
+    );
   }
 }

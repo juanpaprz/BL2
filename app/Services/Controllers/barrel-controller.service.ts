@@ -114,4 +114,52 @@ export class BarrelControllerService {
       })
     );
   }
+
+  getBarrelsOf(
+    typeCodeId: string,
+    bodyCodeId: string
+  ): Observable<FrontBarrel[]> {
+    return forkJoin([
+      this.dbService.getBarrels(),
+      this.dbService.getRarityCodes(),
+    ]).pipe(
+      map((response) => {
+        let barrels: FrontBarrel[] = [];
+
+        if (!response[0] || !response[1]) return barrels;
+
+        let barrelsDB = Object.values(response[0]).filter(
+          (b) => b.typeId == typeCodeId && b.bodyId == bodyCodeId
+        );
+        let rarityCodes = Object.values(response[1]);
+
+        barrelsDB.forEach((b) => {
+          let rarityCode = rarityCodes.find((r) => r.id == b.rarityId);
+
+          if (!rarityCode) return;
+
+          let rarity: FrontRarity = {
+            id: rarityCode.id,
+            code: rarityCode.code,
+            name: rarityCode.name,
+            level: rarityCode.level,
+            color: rarityCode.color,
+            colorTxt: rarityCode.colorTxt,
+            bodies: [],
+          };
+
+          let barrel: FrontBarrel = {
+            id: b.id,
+            code: b.code,
+            name: b.name,
+            rarities: [rarity],
+          };
+
+          barrels.push(barrel);
+        });
+
+        return barrels;
+      })
+    );
+  }
 }

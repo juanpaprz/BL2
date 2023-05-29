@@ -183,4 +183,30 @@ export class RarityControllerService {
       })
     );
   }
+
+  getRarityCodesOf(
+    typeCodeId: string,
+    bodyCodeId: string
+  ): Observable<RarityCode[]> {
+    return forkJoin([
+      this.dbService.getRarityCodes(),
+      this.dbService.getRarities(),
+    ]).pipe(
+      map((response) => {
+        let rarityCodes: RarityCode[] = [];
+
+        if (!response[0] || !response[1]) return rarityCodes;
+
+        let rarities = Object.values(response[1]).filter(
+          (r) => r.typeId == typeCodeId && r.bodyId == bodyCodeId
+        );
+
+        rarityCodes = Object.values(response[0]).filter((rc) =>
+          rarities.some((r) => r.code == rc.code)
+        );
+
+        return rarityCodes;
+      })
+    );
+  }
 }
