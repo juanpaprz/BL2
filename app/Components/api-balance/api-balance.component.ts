@@ -18,6 +18,7 @@ import {
   ValidationService,
 } from '../../Services/validation.service';
 import { Balance } from '../../Entities/Balance';
+import { BalanceControllerService } from '../../Services/Controllers/balance-controller.service';
 
 @Component({
   selector: 'app-api-balance',
@@ -30,7 +31,8 @@ export class ApiBalanceComponent implements OnInit {
     private bodyService: BodyControllerService,
     private barrelService: BarrelControllerService,
     private apiService: ApiFirebaseService,
-    private validateService: ValidationService
+    private validateService: ValidationService,
+    private balanceService: BalanceControllerService
   ) {}
 
   form: FormGroup = new FormGroup({});
@@ -232,6 +234,22 @@ export class ApiBalanceComponent implements OnInit {
 
   addBalance() {
     if (this.form.valid) {
+      let selectedType = this.typeCodes.find(
+        (t) => t.id == this.form.value.type
+      );
+
+      let selectedBody = this.bodyCodes.find(
+        (t) => t.id == this.form.value.body
+      );
+
+      let selectedBarrel = this.barrels.find(
+        (t) => t.id == this.form.value.barrel
+      );
+
+      if (!selectedType || !selectedBody || !selectedBarrel) return;
+
+      let balanceName = `${selectedType.name}_${selectedBody.name}_${selectedBarrel.name}`;
+
       let selectedGrips = this.grips.controls
         .filter((g) => g.value.value)
         .map((g) => g.value.gripId);
@@ -252,7 +270,23 @@ export class ApiBalanceComponent implements OnInit {
         .filter((a) => a.value.value)
         .map((e) => e.value.elementId);
 
-        
+      this.balance = {
+        id: '',
+        name: balanceName,
+        typeId: selectedType.id,
+        bodyId: selectedBody.id,
+        grips: selectedGrips,
+        stocks: selectedStocks,
+        sights: selectedSights,
+        elements: selectedElements,
+        accesories: selectedAccesories,
+      };
+
+      this.balanceService.addBalance(this.balance).subscribe({
+        next: (response) => {
+          console.log(response);
+        },
+      });
     } else {
       this.validateService.toucheFields(this.form, true);
     }
